@@ -1,0 +1,16 @@
+{
+    "name": "SiDomba",
+    "short_name": "SiDomba",
+    "background_color": "#14A44D",
+    "display": "fullscreen",
+    "description": "Merupakan platform untuk manage peternakan domba.",
+    "theme_color": "#14A44D",
+    "start_url": "/",
+    "icons": [
+        {
+            "src": "domba.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}

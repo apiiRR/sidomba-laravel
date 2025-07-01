@@ -16,10 +16,12 @@
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-sm-flex align-items-center justify-content-between">
             <h6 class="m-0 font-weight-bold text-success">Detail Data</h6>
+            @if ($sheep->death == false)
             <a type="button" class="btn btn-secondary" href="{{ route('domba.edit', ['id' => $sheep->sheep_id]) }}">
                 <span class="icon text-white-50">
                     <i class="fas fa-pencil-alt text-white"></i>
                 </span> Ubah Data</a>
+            @endif
         </div>
         <div class="card-body">
             <form>
@@ -74,8 +76,10 @@
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-sm-flex align-items-center justify-content-between">
             <h6 class="m-0 font-weight-bold text-success">Data Berat</h6>
+            @if ($sheep->death == false)
             <a type="button" class="btn btn-success"
                 href="{{ url('/domba/inputWeight', ['id' => $sheep->sheep_id]) }}">Tambah Berat</a>
+            @endif
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -113,8 +117,10 @@
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-sm-flex align-items-center justify-content-between">
             <h6 class="m-0 font-weight-bold text-success">Data Penyakit</h6>
+            @if ($sheep->death == false)
             <a type="button" class="btn btn-success"
                 href="{{ url('/domba/inputDisease', ['id' => $sheep->sheep_id]) }}">Tambah Penyakit</a>
+            @endif
         </div>
         <div class="card-body">
             <div class="table-responsive">

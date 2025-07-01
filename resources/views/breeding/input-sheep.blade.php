@@ -44,9 +44,13 @@
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="checkbox" name="sheep_id[]"
                                 value="{{ $value->sheep_id }}" {{ in_array($value->sheep_id, old('sheep_id', [])) ?
-                            'checked' : '' }}>
+                            'checked' : '' }} {{ $value->death ? 'disabled' : '' }}>
                             <label class="form-check-label">
+                                @if ($value->death) <del>{{ $value->tag_number }} - {{ $value->name }}</del>
+                                <span class="badge badge-danger">Death</span>
+                                @else
                                 {{ $value->tag_number }} - {{ $value->name }}
+                                @endif
                             </label>
                         </div>
                         @endforeach

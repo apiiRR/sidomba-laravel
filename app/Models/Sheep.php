@@ -53,4 +53,11 @@ class Sheep extends Model
     {
         return $this->hasMany(DiseaseRecord::class, 'sheep_id', 'sheep_id');
     }
+
+    public function death()
+    {
+        return $this->hasOne(Death::class, 'sheep_id', 'sheep_id');
+    }
+    
 }
+

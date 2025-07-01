@@ -17,7 +17,7 @@ class DombaController extends Controller
      */
     public function index()
     {
-        $sheep = Sheep::get();
+        $sheep = Sheep::with('death')->get();
         
         $title = 'Hapus Domba!';
         $text = "Apakah kamu ingin menghapus data domba?";

@@ -16,11 +16,13 @@
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-sm-flex align-items-center justify-content-between">
             <h6 class="m-0 font-weight-bold text-success">Detail Data</h6>
+            @if ($breeding->is_active)
             <a type="button" class="btn btn-secondary"
                 href="{{ route('breeding.edit', ['id' => $breeding->breeding_id]) }}">
                 <span class="icon text-white-50">
                     <i class="fas fa-pencil-alt text-white"></i>
                 </span> Ubah Data</a>
+            @endif
         </div>
         <div class="card-body">
             <form>
@@ -45,9 +47,11 @@
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-sm-flex align-items-center justify-content-between">
             <h6 class="m-0 font-weight-bold text-success">Data Domba</h6>
+            @if ($breeding->is_active)
             <a type="button" class="btn btn-success"
                 href="{{ route('breeding.inputSheep', ['id' => $breeding->breeding_id]) }}">Tambah
                 Domba</a>
+            @endif
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -62,7 +66,10 @@
                     <tbody>
                         @foreach ($breeding->breedingSheep as $key => $value)
                         <tr>
-                            <td>{{ $value->sheep->tag_number }}</td>
+                            <td>{{ $value->sheep->tag_number }} @if ($value->sheep->death)
+                                <span class="badge badge-danger">Death</span>
+                                @endif
+                            </td>
                             <td>{{ $value->sheep->name }}</td>
                             <td>{{ $value->sheep->gender }}</td>
                         </tr>
@@ -79,8 +86,10 @@
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-sm-flex align-items-center justify-content-between">
             <h6 class="m-0 font-weight-bold text-success">Data Pakan</h6>
+            @if ($breeding->is_active)
             <a type="button" class="btn btn-success"
                 href="{{ route('breeding.inputFeed', ['id' => $breeding->breeding_id]) }}">Tambah Pakan</a>
+            @endif
         </div>
         <div class="card-body">
             <div class="table-responsive">

@@ -58,7 +58,10 @@
             @endphp
             <tr>
               <td>{{ $id }}</td>
-              <td>{{ $value->cage->code }}</td>
+              <td>{{ $value->cage->code }} @if ($value->is_active == false)
+                <span class="badge badge-secondary">Inactive</span>
+                @endif
+              </td>
               <td>{{ $value->sheep->tag_number }}</td>
               <td>{{ $value->date_started }}</td>
               <td>{{ $value->date_ended }}</td>

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Breeding extends Model
 {
@@ -29,5 +30,12 @@ class Breeding extends Model
     public function breedingSheep()
     {
         return $this->hasMany(BreedingSheep::class, 'breeding_id')->with('sheep');
+    }
+
+    public function getIsActiveAttribute()
+    {
+        $today = Carbon::today();
+
+        return $this->date_started <= $today && $this->date_ended >= $today;
     }
 }

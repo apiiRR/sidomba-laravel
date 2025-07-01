@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <meta name="description" content="" />
   <meta name="author" content="" />
-
+  @PwaHead
   <title>SiDomba</title>
 
   <!-- Custom fonts for this template-->
@@ -18,6 +18,9 @@
 
   <!-- Custom styles for this template-->
   <link href="{{ asset('css/sb-admin-2.min.css') }}" rel="stylesheet" />
+
+  <link rel="icon" href="{{ asset('sheep.ico') }}" type="image/x-icon">
+
 
   @stack('tambahan')
 </head>
@@ -30,9 +33,9 @@
       <!-- Sidebar - Brand -->
       <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
         <div class="sidebar-brand-icon">
-          <i class="fas fa-solid fa-tractor"></i>
+          <img src="{{ asset('domba.png') }}" alt="Logo" style="height: 50px; width: auto;" class="img-fluid">
         </div>
-        <div class="sidebar-brand-text mx-3">SiDomba</div>
+        <div class="sidebar-brand-text mx-2">SiDomba</div>
       </a>
 
       <!-- Divider -->
@@ -165,6 +168,7 @@
   @stack('javascript')
   @include('sweetalert::alert')
 
+  @RegisterServiceWorkerScript
 </body>
 
 </html>

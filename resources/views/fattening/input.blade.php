@@ -42,7 +42,8 @@
                     <select class="form-control" name="sheep_id">
                         <option value="">---</option>
                         @foreach ($sheep as $key => $value)
-                        <option value="{{$value->sheep_id}}">{{ $value->tag_number }} - {{ $value->name }}</option>
+                        <option value="{{$value->sheep_id}}" {{ $value->death ? 'disabled' : '' }}>{{ $value->tag_number
+                            }} - {{ $value->name }}</option>
                         @endforeach
                     </select>
                 </div>

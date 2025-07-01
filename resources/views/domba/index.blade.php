@@ -50,7 +50,10 @@
           <tbody>
             @foreach ($sheep as $key => $value)
             <tr>
-              <td>{{ $value->tag_number }}</td>
+              <td>{{ $value->tag_number }} @if ($value->death)
+                <span class="badge badge-danger">Death</span>
+                @endif
+              </td>
               <td>{{ $value->name }}</td>
               <td>{{ $value->gender }}</td>
               <td>{{ $value->birth_date }}</td>

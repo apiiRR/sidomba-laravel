@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Fattening extends Model
 {
@@ -30,5 +31,12 @@ class Fattening extends Model
     public function fatteningFeeds()
     {
         return $this->hasMany(FatteningFeed::class, 'fattening_id');
+    }
+
+    public function getIsActiveAttribute()
+    {
+        $today = Carbon::today();
+
+        return $this->date_started <= $today && $this->date_ended >= $today;
     }
 }

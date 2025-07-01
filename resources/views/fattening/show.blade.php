@@ -16,11 +16,13 @@
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-sm-flex align-items-center justify-content-between">
             <h6 class="m-0 font-weight-bold text-success">Detail Data</h6>
+            @if ($fattening->is_active)
             <a type="button" class="btn btn-secondary"
                 href="{{ route('fattening.edit', ['id' => $fattening->fattening_id]) }}">
                 <span class="icon text-white-50">
                     <i class="fas fa-pencil-alt text-white"></i>
                 </span> Ubah Data</a>
+            @endif
         </div>
         <div class="card-body">
             <form>
@@ -47,8 +49,10 @@
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-sm-flex align-items-center justify-content-between">
             <h6 class="m-0 font-weight-bold text-success">Data Pakan</h6>
+            @if ($fattening->is_active)
             <a type="button" class="btn btn-success"
                 href="{{ route('fattening.inputFeed', ['id' => $fattening->fattening_id]) }}">Tambah Pakan</a>
+            @endif
         </div>
         <div class="card-body">
             <div class="table-responsive">
