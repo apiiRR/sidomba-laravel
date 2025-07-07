@@ -10,32 +10,19 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <h1 class="h3 mb-2 text-gray-800">Input Breeding Baru</h1>
-    <p class="mb-4">Silahkan masukkan data breeding baru</p>
+    <h1 class="h3 mb-2 text-gray-800">Input Kategori Pan</h1>
+    <p class="mb-4">Silahkan masukkan data baru</p>
 
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-success">Input Data</h6>
         </div>
         <div class="card-body">
-            <form action="{{route('breeding.store')}}" method="POST">
+            <form action="{{route('pan_category.store')}}" method="POST">
                 @csrf
                 <div class="mb-3">
-                    <label id="date_started">Tanggal Mulai</label>
-                    <input class="form-control" type="date" id="date_started" name="date_started" required>
-                </div>
-                <div class="mb-3">
-                    <label id="date_ended">Tanggal Akhir</label>
-                    <input class="form-control" type="date" id="date_ended" name="date_ended" required>
-                </div>
-                <div class="mb-3">
-                    <label id="cage_id">Kandang</label>
-                    <select class="form-control" name="cage_id">
-                        <option value="">---</option>
-                        @foreach ($kandang as $key => $value)
-                        <option value="{{$value->cage_id}}">{{ $value->mitra_name }}</option>
-                        @endforeach
-                    </select>
+                    <label id="category_name">Nama Kategori</label>
+                    <input class="form-control" type="text" id="category_name" name="category_name" required>
                 </div>
                 <button type="submit" class="form-control btn btn-success mt-4">Simpan Data</button>
             </form>

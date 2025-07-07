@@ -18,29 +18,29 @@
             <h6 class="m-0 font-weight-bold text-success">Input Data</h6>
         </div>
         <div class="card-body">
-            <form action="{{route('breeding.storeSheep')}}" method="POST">
+            <form action="{{route('fattening.storeSheep')}}" method="POST">
                 @csrf
                 <div class="mb-3">
                     <label id="kandang">Kandang</label>
                     <input class="form-control" type="text" id="kandang" name="kandang"
-                        value="{{ $breedingPan->breeding->cage->mitra_name }}" required readonly>
-                    <input class="form-control" type="text" id="breeding_pan_id" name="breeding_pan_id"
-                        value="{{ $breedingPan->breeding_pan_id }}" required readonly hidden>
+                        value="{{ $fatteningPan->fattening->cage->mitra_name }}" required readonly>
+                    <input class="form-control" type="text" id="fattening_pan_id" name="fattening_pan_id"
+                        value="{{ $fatteningPan->fattening_pan_id }}" required readonly hidden>
                 </div>
                 <div class="mb-3">
                     <label id="pan">Pan</label>
                     <input class="form-control" type="text" id="pan" name="pan"
-                        value="{{ $breedingPan->panCategory->category_name }}" required readonly>
+                        value="{{ $fatteningPan->panCategory->category_name }}" required readonly>
                 </div>
                 <div class="mb-3">
                     <label id="date_started">Tanggal Mulai</label>
                     <input class="form-control" type="date" id="date_started" name="date_started"
-                        value="{{ $breedingPan->breeding->date_started }}" required readonly>
+                        value="{{ $fatteningPan->fattening->date_started }}" required readonly>
                 </div>
                 <div class="mb-3">
                     <label id="date_ended">Tanggal Akhir</label>
                     <input class="form-control" type="date" id="date_ended" name="date_ended"
-                        value="{{ $breedingPan->breeding->date_ended }}" required readonly>
+                        value="{{ $fatteningPan->fattening->date_ended }}" required readonly>
                 </div>
                 <div class="mb-3">
                     <label id="sheep_id">Pilih Domba : </label>

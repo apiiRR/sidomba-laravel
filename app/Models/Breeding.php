@@ -22,14 +22,19 @@ class Breeding extends Model
         return $this->belongsTo(Cage::class, 'cage_id');
     }
 
-    public function breedingFeeds()
+    public function breedingPans()
     {
-        return $this->hasMany(BreedingFeed::class, 'breeding_id');
+        return $this->hasMany(BreedingPan::class, 'breeding_id');
     }
 
-    public function breedingSheep()
+    public function breedingFeeds()
     {
-        return $this->hasMany(BreedingSheep::class, 'breeding_id')->with('sheep');
+        return $this->hasManyThrough(
+            BreedingFeed::class,
+            BreedingPan::class,
+            'breeding_id',
+            'breeding_pan_id'
+        );
     }
 
     public function getIsActiveAttribute()

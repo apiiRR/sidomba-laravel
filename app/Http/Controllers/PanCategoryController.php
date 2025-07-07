@@ -3,21 +3,23 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Cage;
-use App\Models\CagePan;
 use App\Models\PanCategory;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Validator;
 
-class KandangController extends Controller
+class PanCategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $kandang = Cage::get();
-        return view('kandang.index', compact('kandang'));
+        $title = 'Hapus Kategori!';
+        $text = "Apakah kamu ingin menghapus data kategori ini?";
+        confirmDelete($title, $text);
+
+        $panCategory = PanCategory::get();
+        return view('pan_category.index', compact('panCategory'));
     }
 
     /**
@@ -25,8 +27,7 @@ class KandangController extends Controller
      */
     public function create()
     {
-        $pan = PanCategory::get();
-        return view('kandang.input', compact('pan'));
+        return view('pan_category.input');
     }
 
     /**
@@ -35,9 +36,7 @@ class KandangController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'code' => 'required|unique:cage,code',
-            'mitra_name' => 'required',
-            'pan_category_id.*' => 'exists:pan_category,pan_category_id', // Validasi tiap elemen array
+            'category_name' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -45,21 +44,12 @@ class KandangController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $kandang = Cage::create([
-            'code' => $request->code,
-            'mitra_name' => $request->mitra_name,
+        $death = PanCategory::create([
+            'category_name' => $request->category_name,
         ]);
 
-
-        foreach ($request->pan_category_id as $panCategoryId) {
-            $pan = CagePan::create([
-                'cage_id' => $kandang->cage_id,
-                'pan_category_id' => $panCategoryId,
-            ]);
-        }
-
-        Alert::success('Success', 'Kandang baru berhasil ditambahkan');
-        return redirect()->route('kandang.index');
+        Alert::success('Success', 'Data kategori baru berhasil ditambahkan');
+        return redirect()->route('pan_category.index');
     }
 
     /**
@@ -67,13 +57,7 @@ class KandangController extends Controller
      */
     public function show(string $id)
     {
-        // $cage = Cage::with(['breeding.breedingSheep.sheep', 'fattening.sheep'])->findOrFail($id);
-
-        // // Ambil semua domba tergantung tipe kandang
-        // $sheeps = $cage->allSheeps();
-        $cage = Cage::with(['breeding', 'fattening', 'pan'])->findOrFail($id);
-
-        return view('kandang.show', compact('cage'));
+        //
     }
 
     /**
@@ -97,9 +81,9 @@ class KandangController extends Controller
      */
     public function destroy(string $id)
     {
-        Cage::destroy($id);
+        PanCategory::destroy($id);
 
         Alert::success('Success', 'Data berhasil dihapus');
-        return redirect()->route('kandang.index');
+        return redirect()->route('pan_category.index');
     }
 }

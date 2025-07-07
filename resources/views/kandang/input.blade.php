@@ -22,11 +22,28 @@
                 @csrf
                 <div class="mb-3">
                     <label id="code">Kode</label>
-                    <input class="form-control" type="text" id="code" name="code" placeholder="C123" required>
+                    <input class="form-control" type="text" id="code" name="code" required>
                 </div>
                 <div class="mb-3">
-                    <label id="nama">Nama</label>
-                    <input class="form-control" type="text" id="nama" name="nama" required>
+                    <label id="mitra_name">Nama Mitra</label>
+                    <input class="form-control" type="text" id="mitra_name" name="mitra_name" required>
+                </div>
+                <div class="mb-3">
+                    <label id="sheep_id">Kategori Pan : </label>
+                    <div class="form-group">
+                        @foreach ($pan as $key => $value)
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="pan_category_id[]"
+                                value="{{ $value->pan_category_id }}" {{ in_array($value->pan_category_id,
+                            old('pan_category_id', []))
+                            ?
+                            'checked' : '' }}>
+                            <label class="form-check-label">
+                                {{ $value->category_name }}
+                            </label>
+                        </div>
+                        @endforeach
+                    </div>
                 </div>
                 <button type="submit" class="form-control btn btn-success mt-4">Simpan Data</button>
             </form>

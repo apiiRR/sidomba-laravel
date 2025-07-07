@@ -11,14 +11,20 @@ class BreedingFeed extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'breeding_id',
         'forage_feed',
         'concentrate_feed',
-        'date'
+        'date',
+        'concentrate_category_id',
+        'breeding_pan_id'
     ];
 
-    public function breeding()
+    public function breedingPan()
     {
-        return $this->belongsTo(Breeding::class, 'breeding_id');
+        return $this->belongsTo(BreedingPan::class, 'breeding_pan_id');
+    }
+
+    public function concentrateCategory()
+    {
+        return $this->belongsTo(ConsentrateCategory::class, 'concentrate_category_id');
     }
 }

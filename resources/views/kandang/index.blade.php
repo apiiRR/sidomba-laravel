@@ -29,25 +29,31 @@
         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
           <thead>
             <tr>
-              <th>Code</th>
-              <th>Nama</th>
+              <th>No</th>
+              <th>Nama Mitra</th>
               <th>Fase Aktif</th>
               <th>Action</th>
             </tr>
           </thead>
           <tfoot>
             <tr>
-              <th>Code</th>
-              <th>Nama</th>
+              <th>No</th>
+              <th>Nama Mitra</th>
               <th>Fase Aktif</th>
               <th>Action</th>
             </tr>
           </tfoot>
           <tbody>
+            @php
+            $id = 0;
+            @endphp
             @foreach ($kandang as $key => $value)
+            @php
+            $id++;
+            @endphp
             <tr>
-              <td>{{ $value->code }}</td>
-              <td>{{ $value->name }}</td>
+              <td>{{ $id }}</td>
+              <td>{{ $value->mitra_name }}</td>
               <td>{{ ucfirst($value->active_phase['name']) }}</td>
               <td class="d-flex justify-content-center">
                 <a href="{{ route('kandang.show', ['id' => $value->cage_id]) }}"
@@ -56,11 +62,11 @@
                     <i class="fas fa-solid fa-info text-white"></i>
                   </span>
                 </a>
-                <a href="#" class="btn btn-danger btn-icon-split mr-2" data-confirm-delete="true">
-                  <span class="icon text-white-50">
-                    <i class="fas fa-trash text-white"></i>
-                  </span>
-                </a>
+                <form id="delete" action="{{ route('kandang.destroy', $value->cage_id) }}" method="POST">
+                  @csrf
+                  @method('DELETE')
+                  <button type="submit" class="btn btn-danger"><i class="fas fa-trash text-white"></i></button>
+                </form>
               </td>
             </tr>
             @endforeach

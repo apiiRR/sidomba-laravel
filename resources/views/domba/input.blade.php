@@ -22,13 +22,11 @@
                 @csrf
                 <div class="mb-3">
                     <label id="tag_number">Tag Number</label>
-                    <input class="form-control" type="text" id="tag_number" name="tag_number" placeholder="A12345"
-                        required>
+                    <input class="form-control" type="text" id="tag_number" name="tag_number" required>
                 </div>
                 <div class="mb-3">
                     <label id="nama">Nama</label>
-                    <input class="form-control" type="text" id="nama" name="nama" placeholder="Domba Shaun The Sheep"
-                        required>
+                    <input class="form-control" type="text" id="nama" name="nama" required>
                 </div>
                 <div class="mb-3">
                     <label id="gender">Gender</label>
@@ -43,11 +41,6 @@
                     <input class="form-control" type="date" id="birth_date" name="birth_date" required>
                 </div>
                 <div class="mb-3">
-                    <label id="breed">Ras</label>
-                    <input class="form-control" type="text" id="breed" name="breed" placeholder="Domba Shaun The Sheep"
-                        required>
-                </div>
-                <div class="mb-3">
                     <label id="father_id">Father</label>
                     <select class="form-control" name="father_id">
                         <option value="">---</option>
@@ -57,14 +50,21 @@
                     </select>
                 </div>
                 <div class="mb-3">
-                    <label id="mother_id">Mother</label>
-                    <select class="form-control" name="mother_id">
+                    <label>Mother</label>
+                    <select class="form-control" name="mother_id" id="mother_id">
                         <option value="">---</option>
                         @foreach ($sheep as $key => $value)
                         <option value="{{$value->sheep_id}}">{{ $value->tag_number }} - {{ $value->name }}</option>
                         @endforeach
                     </select>
                 </div>
+                <div class="mb-3" id="pregnant_container" style="display: none;">
+                    <label>Hasil Kehamilan : </label>
+                    <select class="form-control" name="pregnant_id" id="pregnant_id">
+                        <option value="">---</option>
+                    </select>
+                </div>
+
                 <button type="submit" class="form-control btn btn-success mt-4">Simpan Data</button>
             </form>
         </div>
@@ -75,6 +75,39 @@
 @endsection
 
 @push('javascript')
+
+<script>
+    const pregnantData = @json($pregnant);
+    const motherSelect = document.getElementById('mother_id');
+    const pregnantSelect = document.getElementById('pregnant_id');
+    const pregnantContainer = document.getElementById('pregnant_container');
+
+    motherSelect.addEventListener('change', function () {
+        const selectedMotherId = this.value;
+
+        // Kosongkan opsi pregnant
+        pregnantSelect.innerHTML = '<option value="">---</option>';
+
+        if (selectedMotherId) {
+            // Tampilkan div pregnant
+            pregnantContainer.style.display = 'block';
+
+            // Filter data berdasarkan induk
+            const filtered = pregnantData.filter(item => item.sheep_id == selectedMotherId);
+
+            // Tampilkan opsi
+            filtered.forEach((item, index) => {
+                const option = document.createElement('option');
+                option.value = item.pregnant_id;
+                option.textContent = `Hamil ${index + 1} (${item.date_started} - ${item.date_ended})`;
+                pregnantSelect.appendChild(option);
+            });
+        } else {
+            // Sembunyikan jika mother kosong
+            pregnantContainer.style.display = 'none';
+        }
+    });
+</script>
 
 <!-- Page level plugins -->
 <script src="{{ asset('vendor/datatables/jquery.dataTables.min.js') }}"></script>

@@ -37,16 +37,6 @@
                         @endforeach
                     </select>
                 </div>
-                <div class="mb-3">
-                    <label id="sheep_id">Sheep</label>
-                    <select class="form-control" name="sheep_id">
-                        <option value="">---</option>
-                        @foreach ($sheep as $key => $value)
-                        <option value="{{$value->sheep_id}}" {{ $value->death ? 'disabled' : '' }}>{{ $value->tag_number
-                            }} - {{ $value->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
                 <button type="submit" class="form-control btn btn-success mt-4">Simpan Data</button>
             </form>
         </div>

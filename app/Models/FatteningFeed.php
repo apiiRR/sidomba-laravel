@@ -11,14 +11,20 @@ class FatteningFeed extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'fattening_id',
         'forage_feed',
         'concentrate_feed',
-        'date'
+        'date',
+        'concentrate_category_id',
+        'fattening_pan_id'
     ];
 
-    public function fattening()
+    public function fatteningPan()
     {
-        return $this->belongsTo(Fattening::class, 'fattening_id');
+        return $this->belongsTo(FatteningPan::class, 'fattening_pan_id');
+    }
+
+    public function concentrateCategory()
+    {
+        return $this->belongsTo(ConcentrateCategory::class, 'concentrate_category_id');
     }
 }

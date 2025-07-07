@@ -28,11 +28,7 @@
             <form>
                 <div class="mb-3">
                     <label>Kandang</label>
-                    <input class="form-control" type="text" value="{{$fattening->cage->code}}" readonly>
-                </div>
-                <div class="mb-3">
-                    <label>Domba</label>
-                    <input class="form-control" type="text" value="{{$fattening->sheep->tag_number}}" readonly>
+                    <input class="form-control" type="text" value="{{$fattening->cage->mitra_name}}" readonly>
                 </div>
                 <div class="mb-3">
                     <label>Tanggal Mulai</label>
@@ -46,7 +42,49 @@
         </div>
     </div>
 
+
     <div class="card shadow mb-4">
+        <div class="card-header py-3 d-sm-flex align-items-center justify-content-between">
+            <h6 class="m-0 font-weight-bold text-success">Data Pan</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTablePan" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama Pan</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @php
+                        $id = 0;
+                        @endphp
+                        @foreach ($fattening->fatteningPans as $key => $value)
+                        @php
+                        $id++;
+                        @endphp
+                        <tr>
+                            <td>{{ $id }}</td>
+                            <td>{{ $value->panCategory->category_name }}</td>
+                            <td class="d-flex justify-content-center">
+                                <a href="{{ route('fattening.showPan', ['id' => $value->fattening_pan_id]) }}"
+                                    class="btn btn-info btn-icon-split mr-2">
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-solid fa-info text-white"></i>
+                                    </span>
+                                </a>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    {{-- <div class="card shadow mb-4">
         <div class="card-header py-3 d-sm-flex align-items-center justify-content-between">
             <h6 class="m-0 font-weight-bold text-success">Data Pakan</h6>
             @if ($fattening->is_active)
@@ -68,15 +106,15 @@
                         @foreach ($fattening->fatteningFeeds as $key => $value)
                         <tr>
                             <td>{{ $value->date }}</td>
-                            <td>{{ $value->forage_feed }}</td>
-                            <td>{{ $value->concentrate_feed }}</td>
+                            <td>{{ $value->forage_feed }} Kg</td>
+                            <td>{{ $value->concentrate_feed }} Kg</td>
                         </tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
         </div>
-    </div>
+    </div> --}}
 
 
 </div>

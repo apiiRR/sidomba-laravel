@@ -10,7 +10,7 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <h1 class="h3 mb-2 text-gray-800">Edit Fattening</h1>
+    <h1 class="h3 mb-2 text-gray-800">Edit Data Fattening</h1>
     <p class="mb-4">Silahkan ubah data fattening berikut : </p>
 
     <div class="card shadow mb-4">
@@ -38,16 +38,6 @@
                         @foreach ($kandang as $key => $value)
                         <option value="{{$value->cage_id}}" {{ $fattening->cage_id == $value->cage_id ?
                             'selected' : ''}}>{{ $value->code }} - {{ $value->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label id="sheep_id">Sheep</label>
-                    <select class="form-control" name="sheep_id">
-                        <option value="">---</option>
-                        @foreach ($sheep as $key => $value)
-                        <option value="{{$value->sheep_id}}" {{ $fattening->sheep_id == $value->sheep_id ?
-                            'selected' : ''}}>{{ $value->tag_number }} - {{ $value->name }}</option>
                         @endforeach
                     </select>
                 </div>

@@ -10,37 +10,37 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <h1 class="h3 mb-2 text-gray-800">Edit Data Breeding</h1>
-    <p class="mb-4">Silahkan ubah data breeding berikut :</p>
+    <h1 class="h3 mb-2 text-gray-800">Input Data Kehamilan</h1>
+    <p class="mb-4">Silahkan masukkan data kehamilan</p>
 
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-success">Input Data</h6>
         </div>
         <div class="card-body">
-            <form action="{{route('breeding.update', $breeding->breeding_id)}}" method="POST">
+            <form action="{{route('domba.storePregnant')}}" method="POST">
                 @csrf
-                @method('PUT')
+                <div class="mb-3">
+                    <label id="tag_number">Nomor Tag</label>
+                    <input class="form-control" type="text" id="tag_number" name="tag_number"
+                        value="{{ $sheep->tag_number }}" required readonly>
+                    <input class="form-control" type="text" id="sheep_id" name="sheep_id" value="{{ $sheep->sheep_id }}"
+                        required readonly hidden>
+                </div>
+                <div class="mb-3">
+                    <label id="name">Nama</label>
+                    <input class="form-control" type="text" id="name" name="name" value="{{ $sheep->name }}" required
+                        readonly>
+                </div>
                 <div class="mb-3">
                     <label id="date_started">Tanggal Mulai</label>
-                    <input class="form-control" type="date" id="date_started" name="date_started"
-                        value="{{ $breeding->date_started }}" required>
+                    <input class="form-control" type="date" id="date_started" name="date_started" required>
                 </div>
                 <div class="mb-3">
                     <label id="date_ended">Tanggal Akhir</label>
-                    <input class="form-control" type="date" id="date_ended" name="date_ended"
-                        value="{{ $breeding->date_ended }}" required>
+                    <input class="form-control" type="date" id="date_ended" name="date_ended" required>
                 </div>
-                <div class="mb-3">
-                    <label id="cage_id">Kandang</label>
-                    <select class="form-control" name="cage_id">
-                        <option value="">---</option>
-                        @foreach ($allKandang as $key => $value)
-                        <option value="{{$value->cage_id}}" {{ $breeding->cage_id == $value->cage_id ?
-                            'selected' : ''}}>{{ $value->code }} - {{ $value->mitra_name }}</option>
-                        @endforeach
-                    </select>
-                </div>
+
                 <button type="submit" class="form-control btn btn-success mt-4">Simpan Data</button>
             </form>
         </div>

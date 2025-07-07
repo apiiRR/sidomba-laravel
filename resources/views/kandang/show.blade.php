@@ -20,12 +20,8 @@
         <div class="card-body">
             <form>
                 <div class="mb-3">
-                    <label>Kode</label>
-                    <input class="form-control" type="text" value="{{$cage->code}}" readonly>
-                </div>
-                <div class="mb-3">
-                    <label>Nama</label>
-                    <input class="form-control" type="text" value="{{$cage->name}}" readonly>
+                    <label>Nama Mitra</label>
+                    <input class="form-control" type="text" value="{{$cage->mitra_name}}" readonly>
                 </div>
                 <div class="mb-3">
                     <label>Fase Aktif</label>
@@ -48,6 +44,38 @@
         </div>
     </div>
 
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3 d-sm-flex align-items-center justify-content-between">
+            <h6 class="m-0 font-weight-bold text-success">Daftar Kategori Pan</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTablePan" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Kategori Pan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @php
+                        $id = 0;
+                        @endphp
+                        @foreach ($cage->pan as $key => $value)
+                        @php
+                        $id++;
+                        @endphp
+                        <tr>
+                            <td>{{ $id }}</td>
+                            <td>{{ $value->panDetail->category_name }}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 
 
     <div class="card shadow mb-4">
@@ -144,8 +172,9 @@
 
 <script>
     $(document).ready(function () {
-      $('#dataTableWeight').DataTable();
-      $('#dataTableDisease').DataTable();
+        $('#dataTablePan').DataTable();
+        $('#dataTableWeight').DataTable();
+        $('#dataTableDisease').DataTable();
   });
 </script>
 

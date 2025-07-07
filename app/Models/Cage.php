@@ -12,34 +12,44 @@ class Cage extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'code',
-        'name',
-        'type'
+        'mitra_name'
     ];
 
     public function breeding()
     {
-        return $this->hasMany(Breeding::class, 'cage_id')->with('breedingSheep');
+        return $this->hasMany(Breeding::class, 'cage_id')->with('breedingPans.breedingSheep.sheep');
     }
 
     public function fattening()
     {
-        return $this->hasMany(Fattening::class, 'cage_id')->with('sheep');
+        return $this->hasMany(Fattening::class, 'cage_id')->with('fatteningPans.fatteningSheep.sheep');
+    }
+
+    public function pan()
+    {
+        return $this->hasMany(CagePan::class, 'cage_id', 'cage_id');
     }
 
     public function allSheeps()
     {
         if ($this->type === 'breeding') {
-            // Ambil semua sheep dari breedingSheep
             return $this->breeding
-                ->flatMap(function ($b) {
-                    return $b->breedingSheep->pluck('sheep');
+                ->flatMap(function ($breeding) {
+                    return $breeding->breedingPans
+                        ->flatMap(function ($pan) {
+                            return $pan->breedingSheep->pluck('sheep');
+                        });
                 });
         }
 
         if ($this->type === 'fattening') {
-            // Ambil semua sheep dari fattening
-            return $this->fattening->pluck('sheep');
+            return $this->fattening
+                ->flatMap(function ($fattening) {
+                    return $fattening->fatteningPans
+                        ->flatMap(function ($pan) {
+                            return $pan->fatteningSheep->pluck('sheep');
+                        });
+                });
         }
 
         return collect();
@@ -61,12 +71,9 @@ class Cage extends Model
             ];
         }
 
-        $activeFattening = $this->fattening()
+        $activeFattening = $this->breeding()
             ->where('date_started', '<=', $today)
-            ->where(function ($q) use ($today) {
-                $q->where('date_ended', '>=', $today)
-                ->orWhereNull('date_ended');
-            })
+            ->where('date_ended', '>=', $today)
             ->first();
 
         if ($activeFattening) {

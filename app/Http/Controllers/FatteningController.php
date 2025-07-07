@@ -4,9 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Fattening;
+use App\Models\FatteningSheep;
 use App\Models\FatteningFeed;
+use App\Models\FatteningPan;
 use App\Models\Cage;
+use App\Models\CagePan;
 use App\Models\Sheep;
+use App\Models\ConcentrateCategory;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Validator;
 
@@ -17,7 +21,7 @@ class FatteningController extends Controller
      */
     public function index()
     {
-        $fattening = Fattening::with(['cage', 'sheep'])->get();
+        $fattening = Fattening::with(['cage'])->get();
         return view('fattening.index', compact('fattening'));
     }
 
@@ -27,14 +31,25 @@ class FatteningController extends Controller
     public function create()
     {
         $kandang = Cage::all();
-        $sheep = Sheep::all();
-        return view('fattening.input', compact(['kandang', 'sheep']));
+        return view('fattening.input', compact(['kandang']));
+    }
+
+    public function createSheep(string $id)
+    {
+        $fatteningPan = FatteningPan::with([
+            'fattening','fatteningSheep', 'fatteningFeeds', 'panCategory'])->findOrFail($id);
+        $sheep = Sheep::get();
+
+        return view('fattening.input-sheep', compact(['breedingPan', 'sheep']));
     }
 
     public function createFeed($id)
     {
-        $fattening = Fattening::with(['cage', 'sheep'])->findOrFail($id);
-        return view('fattening.input-feed', compact(['fattening']));
+        $fatteningPan = FatteningPan::with([
+            'fattening','fatteningSheep', 'fatteningFeeds', 'panCategory'])->findOrFail($id);
+        $categoryConcentrate = ConcentrateCategory::get();
+
+        return view('fattening.input-feed', compact(['fatteningPan', 'categoryConcentrate']));
     }
 
     /**
@@ -43,7 +58,6 @@ class FatteningController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'sheep_id' => 'required|exists:sheep,sheep_id',
             'cage_id' => 'required|exists:cage,cage_id',
             'date_started' => 'required|date',
             'date_ended' => 'required|date',
@@ -54,23 +68,56 @@ class FatteningController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $breeding = Fattening::create([
-            'sheep_id' => $request->sheep_id,
+        $fattening = Fattening::create([
             'cage_id' => $request->cage_id,
             'date_started' => $request->date_started,
             'date_ended' => $request->date_ended,
         ]);
 
-        Alert::success('Success', 'Breeding baru berhasil ditambahkan');
+        $cage = Cage::with(['pan'])->findOrFail($fattening->cage_id);
+
+        foreach ($cage->pan as $pan) {
+            FatteningPan::create([
+                'fattening_id' => $fattening->fattening_id,
+                'pan_category_id' => $pan->pan_category_id,
+            ]);
+        }
+
+        Alert::success('Success', 'Fattening baru berhasil ditambahkan');
         return redirect()->route('fattening.index');
+    }
+
+    public function storeSheep(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'fattening_pan_id' => 'required|exists:fattening_pan,fattening_pan_id',
+            'sheep_id' => 'required|array',
+            'sheep_id.*' => 'exists:sheep,sheep_id', // Validasi tiap elemen array
+        ]);
+
+        if ($validator->fails()) {
+            Alert::error('Gagal', 'Validasi data gagal. Periksa kembali input Anda.');
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        foreach ($request->sheep_id as $sheepId) {
+            FatteningSheep::create([
+                'fattening_pan_id' => $request->fattening_pan_id,
+                'sheep_id' => $sheepId,
+            ]);
+        }
+
+        Alert::success('Success', 'Data domba berhasil ditambahkan ke fase fattening');
+        return redirect()->route('fattening.showPan', $request->fattening_pan_id);
     }
 
     public function storeFeed(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'fattening_id' => 'required|exists:fattening,fattening_id',
+            'fattening_pan_id' => 'required|exists:fattening_pan,fattening_pan_id',
             'forage_feed' => 'required|numeric',
             'concentrate_feed' => 'required|numeric',
+            'concentrate_category_id' => 'required|exists:concentrate_category,concentrate_category_id',
             'date' => 'required|date'
         ]);
 
@@ -80,14 +127,15 @@ class FatteningController extends Controller
         }
 
         $fattening = FatteningFeed::create([
-            'fattening_id' => $request->fattening_id,
+            'fattening_pan_id' => $request->fattening_pan_id,
             'forage_feed' => $request->forage_feed,
             'concentrate_feed' => $request->concentrate_feed,
+            'concentrate_category_id' => $request->concentrate_category_id,
             'date' => $request->date
         ]);
 
-        Alert::success('Success', 'Data pakan berhasil ditambahkan ke fase breeding');
-        return redirect()->route('fattening.show', $request->fattening_id);
+        Alert::success('Success', 'Data pakan berhasil ditambahkan ke fase fattening');
+        return redirect()->route('fattening.showPan', $request->fattening_pan_id);
     }
 
     /**
@@ -95,7 +143,8 @@ class FatteningController extends Controller
      */
     public function show(string $id)
     {
-        $fattening = Fattening::with(['cage', 'sheep', 'fatteningFeeds'])->findOrFail($id);
+        $fattening = Fattening::with(['fatteningPans'])->findOrFail($id);
+
         return view('fattening.show', compact('fattening'));
     }
 
@@ -105,11 +154,9 @@ class FatteningController extends Controller
     public function edit(string $id)
     {
         $fattening = Fattening::findOrFail($id);
+        $allKandang = Cage::all();
 
-        $kandang = Cage::all();
-        $sheep = Sheep::all();
-
-        return view('fattening.edit', compact(['fattening', 'kandang', 'sheep']));
+        return view('fattening.edit', compact(['fattening', 'allKandang']));
     }
 
     /**
@@ -118,7 +165,6 @@ class FatteningController extends Controller
     public function update(Request $request, string $id)
     {
         $validator = Validator::make($request->all(), [
-            'sheep_id' => 'required|exists:sheep,sheep_id',
             'cage_id' => 'required|exists:cage,cage_id',
             'date_started' => 'required|date',
             'date_ended' => 'required|date',
@@ -130,15 +176,13 @@ class FatteningController extends Controller
         }
 
         $breeding = Fattening::where('fattening_id', $id)->update([
-            'sheep_id' => $request->sheep_id,
             'cage_id' => $request->cage_id,
             'date_started' => $request->date_started,
             'date_ended' => $request->date_ended,
         ]);
 
-        Alert::success('Success', 'Breeding baru berhasil diubah');
-        return redirect()->route('fattening.index');
-    }
+        Alert::success('Success', 'Data fattening berhasil diperbaharui');
+        return redirect()->route('fattening.show', $id);    }
 
     /**
      * Remove the specified resource from storage.

@@ -26,11 +26,11 @@
         <div class="card-body">
             <form>
                 <div class="mb-3">
-                    <label>Tag Number Domba</label>
+                    <label>Nomor Tag</label>
                     <input class="form-control" type="text" value="{{$sheep->tag_number}}" readonly>
                 </div>
                 <div class="mb-3">
-                    <label>Name</label>
+                    <label>Nama</label>
                     <input class="form-control" type="text" value="{{$sheep->name}}" readonly>
                 </div>
                 <div class="mb-3">
@@ -38,12 +38,19 @@
                     <input class="form-control" type="text" value="{{$sheep->gender}}" readonly>
                 </div>
                 <div class="mb-3">
-                    <label>Birth Date</label>
-                    <input class="form-control" type="text" value="{{$sheep->birth_date}}" readonly>
+                    <label>Usia</label>
+                    <input class="form-control" type="text" value="{{$sheep->age}}" readonly>
                 </div>
                 <div class="mb-3">
-                    <label>Breed</label>
-                    <input class="form-control" type="text" value="{{$sheep->breed}}" readonly>
+                    <label>Father Sheep</label>
+                    <div class="input-group">
+                        <input class="form-control" type="text" value="{{$sheep->father->tag_number ?? '-'}}" readonly>
+                        <div class="input-group-append">
+                            <a class="btn btn-outline-secondary" type="button" id="button-addon2" @if ($sheep->father)
+                                href="{{ route('domba.show', ['id' => $sheep->father->sheep_id]) }}"
+                                @endif >Detail</a>
+                        </div>
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label>Mother Sheep</label>
@@ -57,17 +64,102 @@
                     </div>
                 </div>
                 <div class="mb-3">
-                    <label>Father Sheep</label>
+                    <label>Asal Kehamilan</label>
                     <div class="input-group">
-                        <input class="form-control" type="text" value="{{$sheep->father->tag_number ?? '-'}}" readonly>
+                        <input class="form-control" type="text"
+                            value="{{$sheep->pregnancy_order ? 'Kehamilan Ke-'.$sheep->pregnancy_order : '-'}}"
+                            readonly>
                         <div class="input-group-append">
-                            <a class="btn btn-outline-secondary" type="button" id="button-addon2" @if ($sheep->father)
-                                href="{{ route('domba.show', ['id' => $sheep->father->sheep_id]) }}"
-                                @endif >Detail</a>
+                            <a class="btn btn-outline-secondary" type="button" id="button-addon2">Detail</a>
                         </div>
                     </div>
                 </div>
             </form>
+        </div>
+    </div>
+
+    @if ($sheep->gender == 'Betina')
+    <div class="card shadow mb-4">
+        <div class="card-header py-3 d-sm-flex align-items-center justify-content-between">
+            <h6 class="m-0 font-weight-bold text-success">Data Kehamilan</h6>
+            @if ($sheep->death == false)
+            <a type="button" class="btn btn-success"
+                href="{{ url('/domba/inputPregnant', ['id' => $sheep->sheep_id]) }}">Tambah Kehamilan</a>
+            @endif
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTablePregnant" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Tanggal Mulai</th>
+                            <th>Tanggal Akhir</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @php
+                        $id = 0;
+                        @endphp
+                        @foreach ($sheep->pregnancies as $key => $value)
+                        @php
+                        $id++;
+                        @endphp
+                        <tr>
+                            <td>{{ $id }}</td>
+                            <td>{{ $value->date_started }}</td>
+                            <td>{{ $value->date_ended }}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    @endif
+
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3 d-sm-flex align-items-center justify-content-between">
+            <h6 class="m-0 font-weight-bold text-success">Fase Anakan</h6>
+            @if ($sheep->death == false)
+            <a type="button" class="btn btn-success"
+                href="{{ url('/domba/inputPhase', ['id' => $sheep->sheep_id]) }}">Tambah Fase</a>
+            @endif
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTablePhase" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Fase Anakan</th>
+                            <th>Tanggal Mulai</th>
+                            <th>Tanggal Akhir</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @php
+                        $id = 0;
+                        @endphp
+                        @foreach ($sheep->childCategories as $key => $value)
+                        @php
+                        $id++;
+                        @endphp
+                        <tr>
+                            <td>{{ $id }}</td>
+                            <td>{{ $value->childCategory->category_name }}
+                                @if ($value->is_active)
+                                <span class="badge badge-success">Aktif</span>
+                                @endif
+                            </td>
+                            <td>{{ $value->date_started }}</td>
+                            <td>{{ $value->date_ended }}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
@@ -165,8 +257,10 @@
 
 <script>
     $(document).ready(function () {
-      $('#dataTableWeight').DataTable();
-      $('#dataTableDisease').DataTable();
+        $('#dataTablePregnant').DataTable();
+        $('#dataTablePhase').DataTable();
+        $('#dataTableWeight').DataTable();
+        $('#dataTableDisease').DataTable();
   });
 </script>
 

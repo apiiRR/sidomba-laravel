@@ -32,7 +32,6 @@
             <tr>
               <th>No</th>
               <th>Kandang</th>
-              <th>Domba</th>
               <th>Tanggal Mulai</th>
               <th>Tanggal Akhir</th>
               <th>Action</th>
@@ -42,7 +41,6 @@
             <tr>
               <th>No</th>
               <th>Kandang</th>
-              <th>Domba</th>
               <th>Tanggal Mulai</th>
               <th>Tanggal Akhir</th>
               <th>Action</th>
@@ -58,11 +56,10 @@
             @endphp
             <tr>
               <td>{{ $id }}</td>
-              <td>{{ $value->cage->code }} @if ($value->is_active == false)
+              <td>{{ $value->cage->mitra_name }} @if ($value->is_active == false)
                 <span class="badge badge-secondary">Inactive</span>
                 @endif
               </td>
-              <td>{{ $value->sheep->tag_number }}</td>
               <td>{{ $value->date_started }}</td>
               <td>{{ $value->date_ended }}</td>
               <td class="d-flex justify-content-center">
@@ -75,7 +72,7 @@
                 <form id="delete" action="{{ route('fattening.destroy', $value->fattening_id) }}" method="POST">
                   @csrf
                   @method('DELETE')
-                  <button onclick="if (confirm('Are you sure you deleted this data?.') == false) {
+                  <button onclick="if (confirm('Apakah kamu yakin untuk menghapus data ini?.') == false) {
                       return false;
                   }" type="submit" class="btn btn-danger"><i class="fas fa-trash text-white"></i></button>
                 </form>

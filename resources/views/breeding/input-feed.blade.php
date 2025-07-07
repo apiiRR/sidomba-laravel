@@ -22,20 +22,25 @@
                 @csrf
                 <div class="mb-3">
                     <label id="kandang">Kandang</label>
-                    <input class="form-control" type="text" id="kandang" name="kandang" placeholder="A12345"
-                        value="{{ $breeding->cage->code }}" required readonly>
-                    <input class="form-control" type="text" id="breeding_id" name="breeding_id" placeholder="A12345"
-                        value="{{ $breeding->breeding_id }}" required readonly hidden>
+                    <input class="form-control" type="text" id="kandang" name="kandang"
+                        value="{{ $breedingPan->breeding->cage->mitra_name }}" required readonly>
+                    <input class="form-control" type="text" id="breeding_pan_id" name="breeding_pan_id"
+                        placeholder="A12345" value="{{ $breedingPan->breeding_pan_id }}" required readonly hidden>
+                </div>
+                <div class="mb-3">
+                    <label id="pan">Pan</label>
+                    <input class="form-control" type="text" id="pan" name="pan"
+                        value="{{ $breedingPan->panCategory->category_name }}" required readonly>
                 </div>
                 <div class="mb-3">
                     <label id="date_started">Tanggal Mulai</label>
                     <input class="form-control" type="date" id="date_started" name="date_started"
-                        value="{{ $breeding->date_started }}" required readonly>
+                        value="{{ $breedingPan->breeding->date_started }}" required readonly>
                 </div>
                 <div class="mb-3">
                     <label id="date_ended">Tanggal Akhir</label>
                     <input class="form-control" type="date" id="date_ended" name="date_ended"
-                        value="{{ $breeding->date_ended }}" required readonly>
+                        value="{{ $breedingPan->breeding->date_ended }}" required readonly>
                 </div>
                 <div class="mb-3">
                     <label id="date">Tanggal Pemberian Pakan</label>
@@ -52,6 +57,16 @@
                     </div>
                 </div>
                 <div class="mb-3">
+                    <label id="concentrate_category_id">Jenis Konsentrat</label>
+                    <select class="form-control" name="concentrate_category_id">
+                        <option value="">---</option>
+                        @foreach ($categoryConcentrate as $key => $value)
+                        <option value="{{$value->consentrate_category_id}}">{{ $value->category_name
+                            }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="mb-3">
                     <label id="concentrate_feed">Pakan Konsentrat</label>
                     <div class="input-group">
                         <div class="input-group-prepend">
@@ -61,6 +76,7 @@
                             name="concentrate_feed" required>
                     </div>
                 </div>
+
                 <button type="submit" class="form-control btn btn-success mt-4">Simpan Data</button>
             </form>
         </div>

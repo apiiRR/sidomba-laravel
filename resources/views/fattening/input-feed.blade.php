@@ -28,9 +28,9 @@
                         value="{{ $fattening->fattening_id }}" required readonly hidden>
                 </div>
                 <div class="mb-3">
-                    <label id="sheep_id">Domba</label>
-                    <input class="form-control" type="text" id="sheep_id" name="sheep_id"
-                        value="{{ $fattening->sheep->tag_number }} - {{ $fattening->sheep->name }}" required readonly>
+                    <label id="pan">Pan</label>
+                    <input class="form-control" type="text" id="pan" name="pan"
+                        value="{{ $fatteningPan->panCategory->category_name }}" required readonly>
                 </div>
                 <div class="mb-3">
                     <label id="date_started">Tanggal Mulai</label>
@@ -57,6 +57,16 @@
                     </div>
                 </div>
                 <div class="mb-3">
+                    <label id="concentrate_category_id">Jenis Konsentrat</label>
+                    <select class="form-control" name="concentrate_category_id">
+                        <option value="">---</option>
+                        @foreach ($categoryConcentrate as $key => $value)
+                        <option value="{{$value->consentrate_category_id}}">{{ $value->category_name
+                            }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="mb-3">
                     <label id="concentrate_feed">Pakan Konsentrat</label>
                     <div class="input-group">
                         <div class="input-group-prepend">
@@ -66,6 +76,7 @@
                             name="concentrate_feed" required>
                     </div>
                 </div>
+
                 <button type="submit" class="form-control btn btn-success mt-4">Simpan Data</button>
             </form>
         </div>

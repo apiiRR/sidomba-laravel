@@ -45,11 +45,6 @@
                         value="{{ $sheep->birth_date}}" required>
                 </div>
                 <div class="mb-3">
-                    <label id="breed">Ras</label>
-                    <input class="form-control" type="text" id="breed" name="breed" placeholder="Domba Shaun The Sheep"
-                        value="{{ $sheep->breed}}" required>
-                </div>
-                <div class="mb-3">
                     <label id="father_id">Father</label>
                     <select class="form-control" name="father_id">
                         <option value="">---</option>

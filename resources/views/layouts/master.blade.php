@@ -20,8 +20,6 @@
   <link href="{{ asset('css/sb-admin-2.min.css') }}" rel="stylesheet" />
 
   <link rel="icon" href="{{ asset('sheep.ico') }}" type="image/x-icon">
-
-
   @stack('tambahan')
 </head>
 
@@ -82,6 +80,23 @@
         <a class="nav-link" href="{{route('death.index')}}">
           <i class="fas fa-fw fa-skull-crossbones"></i>
           <span>Death</span></a>
+      </li>
+
+      <li
+        class="nav-item {{ str(request()->path())->contains('category') || str(request()->path())->contains('category/*') ? 'active' : '' }}">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
+          aria-controls="collapseTwo">
+          <i class="fas fa-fw fa-cog"></i>
+          <span>Master Data</span>
+        </a>
+        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Master Data:</h6>
+            <a class="collapse-item" href="{{route('pan_category.index')}}">Kategori Pan</a>
+            <a class="collapse-item" href="{{route('consentrate_category.index')}}">Kategori Konsentrat</a>
+            <a class="collapse-item" href="{{route('child_category.index')}}">Kategori Anak</a>
+          </div>
+        </div>
       </li>
 
       <!-- Divider -->

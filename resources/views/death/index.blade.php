@@ -56,13 +56,13 @@
                     <i class="fas fa-solid fa-info text-white"></i>
                   </span>
                 </a>
-                <form id="delete" action="{{ route('death.destroy', $value->death_id) }}" method="POST">
+                {{-- <form id="delete" action="{{ route('death.destroy', $value->death_id) }}" method="POST">
                   @csrf
                   @method('DELETE')
                   <button onclick="if (confirm('Are you sure you deleted this data?.') == false) {
                       return false;
                   }" type="submit" class="btn btn-danger"><i class="fas fa-trash text-white"></i></button>
-                </form>
+                </form> --}}
               </td>
             </tr>
             @endforeach

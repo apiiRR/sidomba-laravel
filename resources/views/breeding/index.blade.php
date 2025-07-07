@@ -56,7 +56,7 @@
             @endphp
             <tr>
               <td>{{ $id }}</td>
-              <td>{{ $value->cage->code }} @if ($value->is_active == false)
+              <td>{{ $value->cage->mitra_name }} @if ($value->is_active == false)
                 <span class="badge badge-secondary">Inactive</span>
                 @endif
               </td>
@@ -69,11 +69,13 @@
                     <i class="fas fa-solid fa-info text-white"></i>
                   </span>
                 </a>
-                <a href="#" class="btn btn-danger btn-icon-split mr-2" data-confirm-delete="true">
-                  <span class="icon text-white-50">
-                    <i class="fas fa-trash text-white"></i>
-                  </span>
-                </a>
+                <form id="delete" action="{{ route('breeding.destroy', $value->breeding_id) }}" method="POST">
+                  @csrf
+                  @method('DELETE')
+                  <button onclick="if (confirm('Apakah kamu yakin untuk menghapus data ini?.') == false) {
+                      return false;
+                  }" type="submit" class="btn btn-danger"><i class="fas fa-trash text-white"></i></button>
+                </form>
               </td>
             </tr>
             @endforeach
