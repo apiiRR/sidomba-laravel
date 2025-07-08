@@ -18,4 +18,9 @@ class ConsentrateCategory extends Model
     {
         return $this->hasMany(BreedingFeed::class, 'concentrate_category_id');
     }
+
+    public function fatteningFeeds()
+    {
+        return $this->hasMany(FatteningFeed::class, 'concentrate_category_id');
+    }
 }

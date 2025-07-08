@@ -10,19 +10,22 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <h1 class="h3 mb-2 text-gray-800">Input Kandang Baru</h1>
-    <p class="mb-4">Silahkan masukkan data kandang baru</p>
+    <h1 class="h3 mb-2 text-gray-800">Input Pan Baru</h1>
+    <p class="mb-4">Silahkan masukkan data pan baru</p>
 
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-success">Input Data</h6>
         </div>
         <div class="card-body">
-            <form action="{{route('kandang.store')}}" method="POST">
+            <form action="{{route('kandang.storePan')}}" method="POST">
                 @csrf
                 <div class="mb-3">
                     <label id="mitra_name">Nama Mitra</label>
-                    <input class="form-control" type="text" id="mitra_name" name="mitra_name" required>
+                    <input class="form-control" type="text" id="mitra_name" name="mitra_name"
+                        value="{{$cage->mitra_name}}" required readonly>
+                    <input class="form-control" type="text" id="cage_id" name="cage_id" value="{{$cage->cage_id}}"
+                        required readonly hidden>
                 </div>
                 <div class="mb-3">
                     <label id="sheep_id">Kategori Pan : </label>
@@ -33,7 +36,9 @@
                                 value="{{ $value->pan_category_id }}" {{ in_array($value->pan_category_id,
                             old('pan_category_id', []))
                             ?
-                            'checked' : '' }}>
+                            'checked' : '' }} {{ $cagePan->firstWhere('pan_category_id', $value->pan_category_id) ?
+                            'disabled' :
+                            '' }}>
                             <label class="form-check-label">
                                 {{ $value->category_name }}
                             </label>

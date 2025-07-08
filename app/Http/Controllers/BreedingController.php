@@ -157,6 +157,14 @@ class BreedingController extends Controller
         return view('breeding.show-pan', compact(['breedingPan']));
     }
 
+    public function transferSheep(string $idBreedingSheep, string $idBreeding)
+    {
+        $breedingSheep = BreedingSheep::with(['sheep', 'breedingPan'])->findOrFail($idBreedingSheep);
+        $breedingPan = BreedingPan::with(['breeding', 'panCategory', 'breedingSheep'])->where('breeding_id', $idBreeding)->get();
+        
+        return view('breeding.transfer-sheep', compact(['breedingSheep', 'breedingPan']));
+    }
+
     /**
      * Show the form for editing the specified resource.
      */
@@ -191,7 +199,27 @@ class BreedingController extends Controller
         ]);
 
         Alert::success('Success', 'Data breeding berhasil diperbaharui');
-        return redirect()->route('breeding.show', $id);
+        return redirect()->route('breeding.showPan', $id);
+    }
+
+    public function updateTransferSheep(Request $request, string $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'breeding_pan_id_old' => 'required|exists:breeding_pan,breeding_pan_id',
+            'breeding_pan_id' => 'required|exists:breeding_pan,breeding_pan_id',
+        ]);
+
+        if ($validator->fails()) {
+            Alert::error('Gagal', 'Validasi data gagal. Periksa kembali input Anda.');
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $breeding = BreedingSheep::where('breeding_sheep_id', $id)->update([
+            'breeding_pan_id' => $request->breeding_pan_id,
+        ]);
+
+        Alert::success('Success', 'Transfer domba berhasil dilakukan');
+        return redirect()->route('breeding.showPan', $request->breeding_pan_id_old);
     }
 
     /**

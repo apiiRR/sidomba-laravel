@@ -25,6 +25,6 @@ class FatteningFeed extends Model
 
     public function concentrateCategory()
     {
-        return $this->belongsTo(ConcentrateCategory::class, 'concentrate_category_id');
+        return $this->belongsTo(ConsentrateCategory::class, 'concentrate_category_id');
     }
 }

@@ -81,7 +81,7 @@
             <h6 class="m-0 font-weight-bold text-success">Data Pakan</h6>
             @if ($fatteningPan->fattening->is_active)
             <a type="button" class="btn btn-success"
-                href="{{ route('fattening.inputSheep', ['id' => $fatteningPan->fattening_pan_id]) }}">Tambah Pakan</a>
+                href="{{ route('fattening.inputFeed', ['id' => $fatteningPan->fattening_pan_id]) }}">Tambah Pakan</a>
             @endif
         </div>
         <div class="card-body">
@@ -101,7 +101,7 @@
                             <td>{{ $value->date }}</td>
                             <td>{{ $value->forage_feed }} gram</td>
                             <td>{{ $value->concentrate_feed }} gram</td>
-                            <td>{{ $value->concentrate_category->category_name }}</td>
+                            <td>{{ $value->concentrateCategory->category_name }}</td>
                         </tr>
                         @endforeach
                     </tbody>

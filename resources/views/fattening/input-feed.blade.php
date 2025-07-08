@@ -22,10 +22,10 @@
                 @csrf
                 <div class="mb-3">
                     <label id="kandang">Kandang</label>
-                    <input class="form-control" type="text" id="kandang" name="kandang" placeholder="A12345"
-                        value="{{ $fattening->cage->code }}" required readonly>
-                    <input class="form-control" type="text" id="fattening_id" name="fattening_id" placeholder="A12345"
-                        value="{{ $fattening->fattening_id }}" required readonly hidden>
+                    <input class="form-control" type="text" id="kandang" name="kandang"
+                        value="{{ $fatteningPan->fattening->cage->mitra_name }}" required readonly>
+                    <input class="form-control" type="text" id="fattening_pan_id" name="fattening_pan_id"
+                        placeholder="A12345" value="{{ $fatteningPan->fattening_pan_id }}" required readonly hidden>
                 </div>
                 <div class="mb-3">
                     <label id="pan">Pan</label>
@@ -35,12 +35,12 @@
                 <div class="mb-3">
                     <label id="date_started">Tanggal Mulai</label>
                     <input class="form-control" type="date" id="date_started" name="date_started"
-                        value="{{ $fattening->date_started }}" required readonly>
+                        value="{{ $fatteningPan->fattening->date_started }}" required readonly>
                 </div>
                 <div class="mb-3">
                     <label id="date_ended">Tanggal Akhir</label>
                     <input class="form-control" type="date" id="date_ended" name="date_ended"
-                        value="{{ $fattening->date_ended }}" required readonly>
+                        value="{{ $fatteningPan->fattening->date_ended }}" required readonly>
                 </div>
                 <div class="mb-3">
                     <label id="date">Tanggal Pemberian Pakan</label>

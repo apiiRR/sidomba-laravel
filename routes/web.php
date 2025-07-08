@@ -38,8 +38,10 @@ Route::delete('/domba/delete/{id}', [DombaController::class, 'destroy'])->name('
 
 Route::get('/kandang', [KandangController::class, 'index'])->name('kandang.index');
 Route::get('/kandang/input', [KandangController::class, 'create'])->name('kandang.input');
+Route::get('/kandang/inputPan/{id}', [KandangController::class, 'createPan'])->name('kandang.inputPan');
 Route::get('/kandang/{id}', [KandangController::class, 'show'])->name('kandang.show');
 Route::post('/kandang/store', [KandangController::class, 'store'])->name('kandang.store');
+Route::post('/kandang/storePan', [KandangController::class, 'storePan'])->name('kandang.storePan');
 Route::get('/kandang/edit/{id}', [KandangController::class, 'edit'])->name('kandang.edit');
 Route::put('/kandang/update/{id}', [KandangController::class, 'update'])->name('kandang.update');
 Route::delete('/kandang/delete/{id}', [KandangController::class, 'destroy'])->name('kandang.destroy');
@@ -51,11 +53,13 @@ Route::get('/breeding/inputSheep/{id}', [BreedingController::class, 'createSheep
 Route::get('/breeding/inputFeed/{id}', [BreedingController::class, 'createFeed'])->name('breeding.inputFeed');
 Route::get('/breeding/{id}', [BreedingController::class, 'show'])->name('breeding.show');
 Route::get('/breeding/showPan/{id}', [BreedingController::class, 'showPan'])->name('breeding.showPan');
+Route::get('/breeding/transferSheep/{idBreedingSheep}/{idBreeding}', [BreedingController::class, 'transferSheep'])->name('breeding.transferSheep');
 Route::post('/breeding/store', [BreedingController::class, 'store'])->name('breeding.store');
 Route::post('/breeding/storeSheep', [BreedingController::class, 'storeSheep'])->name('breeding.storeSheep');
 Route::post('/breeding/storeFeed', [BreedingController::class, 'storeFeed'])->name('breeding.storeFeed');
 Route::get('/breeding/edit/{id}', [BreedingController::class, 'edit'])->name('breeding.edit');
 Route::put('/breeding/update/{id}', [BreedingController::class, 'update'])->name('breeding.update');
+Route::put('/breeding/updateTransferSheep/{id}', [BreedingController::class, 'updateTransferSheep'])->name('breeding.updateTransferSheep');
 Route::delete('/breeding/delete/{id}', [BreedingController::class, 'destroy'])->name('breeding.destroy');
 
 

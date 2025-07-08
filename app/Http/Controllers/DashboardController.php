@@ -10,6 +10,8 @@ use App\Models\BreedingFeed;
 use App\Models\BreedingSheep;
 use App\Models\Fattening;
 use App\Models\FatteningFeed;
+use App\Models\FatteningSheep;
+use App\Models\FatteningPan;
 use App\Models\DeathRecord;
 use App\Models\WeightRecord;
 use App\Models\FeedPlan;
@@ -45,25 +47,22 @@ class DashboardController extends Controller
         // Total Feed Today
         $today = Carbon::today();
 
-        $totalBreedingFeed = BreedingFeed::whereDate('date', $today)
-            ->select(DB::raw('SUM(forage_feed + concentrate_feed) as total'))
-            ->value('total') ?? 0;
+        $totalBreedingFeed = BreedingFeed::sum(DB::raw('forage_feed + concentrate_feed'));
 
-        $totalFatteningFeed = FatteningFeed::whereDate('date', $today)
-            ->select(DB::raw('SUM(forage_feed + concentrate_feed) as total'))
-            ->value('total') ?? 0;
+        $totalFatteningFeed = FatteningFeed::sum(DB::raw('forage_feed + concentrate_feed'));
 
         $totalFeedToday = $totalBreedingFeed + $totalFatteningFeed;
 
         // Population Growth (Line Chart) - last 12 months
-        $populationGrowth = Sheep::select(
-            DB::raw("TO_CHAR(DATE_TRUNC('month', birth_date), 'YYYY-MM') as month"),
-            DB::raw('COUNT(*) as total')
-        )
-        ->where('birth_date', '>=', now()->subMonths(12))
-        ->groupBy('month')
-        ->orderBy('month')
-        ->get();
+        $populationGrowth = Sheep::selectRaw("
+                TO_CHAR(DATE_TRUNC('month', birth_date), 'YYYY-MM') AS month,
+                COUNT(*) AS total
+            ")
+            ->whereNotNull('birth_date')
+            ->where('birth_date', '>=', now()->subMonths(12)->startOfMonth())
+            ->groupByRaw("DATE_TRUNC('month', birth_date)")
+            ->orderByRaw("DATE_TRUNC('month', birth_date)")
+            ->get();
 
         $labelsPopulationGrowth = $populationGrowth->pluck('month');
         $dataPopulationGrowth = $populationGrowth->pluck('total');
@@ -129,6 +128,60 @@ class DashboardController extends Controller
         // Random colors untuk card
         $randomColors = $this->generateRandomColors(10);
 
+        // AVG Start
+        $adgList = [];
+
+        $fatteningSheepRecords = FatteningSheep::with([
+            'sheep.weightRecords',
+            'fatteningPan.fattening'
+        ])->get();
+
+        foreach ($fatteningSheepRecords as $record) {
+            $sheep = $record->sheep;
+            $pan = $record->fatteningPan;
+            $fattening = $pan->fattening;
+
+            $startDate = Carbon::parse($fattening->date_started);
+            $endDate = Carbon::parse($fattening->date_ended);
+
+            // Ambil berat awal berdasarkan pan
+            $startWeight = $sheep->weightRecords()
+                ->whereDate('date', '>=', $startDate->copy()->subDays(2))
+                ->whereDate('date', '<=', $startDate->copy()->addDays(3))
+                ->orderBy('date', 'asc')
+                ->value('weight');
+
+            // Ambil berat akhir berdasarkan pan
+            $endWeight = $sheep->weightRecords()
+                ->whereDate('date', '>=', $endDate->copy()->subDays(3))
+                ->whereDate('date', '<=', $endDate->copy()->addDays(2))
+                ->orderBy('date', 'desc')
+                ->value('weight');
+
+            // Hitung ADG
+            if ($startWeight !== null && $endWeight !== null) {
+                $days = $startDate->diffInDays($endDate);
+                if ($days > 0) {
+                    $adg = ($endWeight - $startWeight) / $days;
+                    $adgList[] = $adg;
+                }
+            }
+        }
+
+        $averageADG = count($adgList) > 0 ? round(array_sum($adgList) / count($adgList), 2) : 0;
+
+        // AVG END
+
+        // START Pie Chart By Gander
+        $genderDistribution = Sheep::select('gender', DB::raw('COUNT(*) as total'))
+        ->groupBy('gender')
+        ->get();
+
+        // Pisahkan menjadi array label dan data untuk Chart.js
+        $genderLabels = $genderDistribution->pluck('gender');
+        $genderTotals = $genderDistribution->pluck('total');
+        // END PIE CHART
+
         return view('dashboard', compact(
             'totalSheep',
             'breedingSheep',
@@ -146,7 +199,10 @@ class DashboardController extends Controller
             'mortalityPie',
             'recentDeaths',
             'recentDiseases',
-            'randomColors'
+            'randomColors',
+            'averageADG',
+            'genderLabels',
+            'genderTotals'
         ));
     }
 

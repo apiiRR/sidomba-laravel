@@ -29,13 +29,21 @@ class KandangController extends Controller
         return view('kandang.input', compact('pan'));
     }
 
+    public function createPan($id)
+    {
+        $cage = Cage::with(['breeding', 'fattening', 'pan'])->findOrFail($id);
+        $cagePan = CagePan::where('cage_id', $id)->get();
+        $pan = PanCategory::get();
+
+        return view('kandang.input-pan', compact(['cage','pan', 'cagePan']));
+    }
+
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'code' => 'required|unique:cage,code',
             'mitra_name' => 'required',
             'pan_category_id.*' => 'exists:pan_category,pan_category_id', // Validasi tiap elemen array
         ]);
@@ -46,7 +54,6 @@ class KandangController extends Controller
         }
 
         $kandang = Cage::create([
-            'code' => $request->code,
             'mitra_name' => $request->mitra_name,
         ]);
 
@@ -60,6 +67,29 @@ class KandangController extends Controller
 
         Alert::success('Success', 'Kandang baru berhasil ditambahkan');
         return redirect()->route('kandang.index');
+    }
+
+    public function storePan(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'pan_category_id.*' => 'exists:pan_category,pan_category_id', // Validasi tiap elemen array
+        ]);
+
+        if ($validator->fails()) {
+            Alert::error('Gagal', 'Validasi data gagal. Periksa kembali input Anda.');
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+
+        foreach ($request->pan_category_id as $panCategoryId) {
+            $pan = CagePan::create([
+                'cage_id' => $request->cage_id,
+                'pan_category_id' => $panCategoryId,
+            ]);
+        }
+
+        Alert::success('Success', 'Kandang baru berhasil ditambahkan');
+        return redirect()->route('kandang.show', $request->cage_id);
     }
 
     /**

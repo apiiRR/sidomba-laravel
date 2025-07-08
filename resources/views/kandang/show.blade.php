@@ -14,8 +14,8 @@
     <p class="mb-4">Berikut rincian untuk data kandang : {{$cage->code}}</p>
 
     <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-success">Detail Data</h6>
+        <div class="card-header py-3 d-sm-flex align-items-center justify-content-between">
+            <h6 class="m-0 font-weight-bold text-success">Data Kandang</h6>
         </div>
         <div class="card-body">
             <form>
@@ -48,6 +48,8 @@
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-sm-flex align-items-center justify-content-between">
             <h6 class="m-0 font-weight-bold text-success">Daftar Kategori Pan</h6>
+            <a type="button" class="btn btn-success"
+                href="{{ url('/kandang/inputPan', ['id' => $cage->cage_id]) }}">Tambah Pan</a>
         </div>
         <div class="card-body">
             <div class="table-responsive">

@@ -125,8 +125,7 @@
 
 <script>
     $(document).ready(function () {
-      $('#dataTableWeight').DataTable();
-      $('#dataTableDisease').DataTable();
+      $('#dataTablePan').DataTable();
   });
 </script>
 

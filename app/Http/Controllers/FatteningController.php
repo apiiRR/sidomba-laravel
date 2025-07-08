@@ -10,7 +10,7 @@ use App\Models\FatteningPan;
 use App\Models\Cage;
 use App\Models\CagePan;
 use App\Models\Sheep;
-use App\Models\ConcentrateCategory;
+use App\Models\ConsentrateCategory;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Validator;
 
@@ -40,14 +40,14 @@ class FatteningController extends Controller
             'fattening','fatteningSheep', 'fatteningFeeds', 'panCategory'])->findOrFail($id);
         $sheep = Sheep::get();
 
-        return view('fattening.input-sheep', compact(['breedingPan', 'sheep']));
+        return view('fattening.input-sheep', compact(['fatteningPan', 'sheep']));
     }
 
     public function createFeed($id)
     {
         $fatteningPan = FatteningPan::with([
             'fattening','fatteningSheep', 'fatteningFeeds', 'panCategory'])->findOrFail($id);
-        $categoryConcentrate = ConcentrateCategory::get();
+        $categoryConcentrate = ConsentrateCategory::get();
 
         return view('fattening.input-feed', compact(['fatteningPan', 'categoryConcentrate']));
     }
@@ -146,6 +146,14 @@ class FatteningController extends Controller
         $fattening = Fattening::with(['fatteningPans'])->findOrFail($id);
 
         return view('fattening.show', compact('fattening'));
+    }
+
+    public function showPan(string $id)
+    {
+        $fatteningPan = FatteningPan::with([
+            'fattening','fatteningSheep', 'fatteningFeeds', 'panCategory'])->findOrFail($id);
+        
+        return view('fattening.show-pan', compact(['fatteningPan']));
     }
 
     /**

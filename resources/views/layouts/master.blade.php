@@ -8,7 +8,7 @@
   <meta name="description" content="" />
   <meta name="author" content="" />
   @PwaHead
-  <title>SiDomba</title>
+  <title>SIMBA - Sistem Informasi & Monitoring Domba</title>
 
   <!-- Custom fonts for this template-->
   <link href="{{ asset('vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css" />
@@ -33,8 +33,10 @@
         <div class="sidebar-brand-icon">
           <img src="{{ asset('domba.png') }}" alt="Logo" style="height: 50px; width: auto;" class="img-fluid">
         </div>
-        <div class="sidebar-brand-text mx-2">SiDomba</div>
+        <div class="sidebar-brand-text mx-2">SIMBA</div>
       </a>
+      <div class="text-center text-white mb-4" style="font-size:10px">Sistem Informasi & Monitoring Domba
+      </div>
 
       <!-- Divider -->
       <hr class="sidebar-divider my-0" />

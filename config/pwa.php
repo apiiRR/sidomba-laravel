@@ -19,8 +19,8 @@ return [
     */
 
     'manifest' => [
-        'name' => 'SiDomba',
-        'short_name' => 'SiDomba',
+        'name' => 'SIMBA',
+        'short_name' => 'SIMBA',
         'background_color' => '#14A44D',
         'display' => 'fullscreen',
         'description' => 'Merupakan platform untuk manage peternakan domba.',

@@ -95,6 +95,8 @@
                             <th>No</th>
                             <th>Tanggal Mulai</th>
                             <th>Tanggal Akhir</th>
+                            <th>Jumlah Anak</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -108,6 +110,7 @@
                         <tr>
                             <td>{{ $id }}</td>
                             <td>{{ $value->date_started }}</td>
+                            <td>{{ $value->date_ended }}</td>
                             <td>{{ $value->date_ended }}</td>
                         </tr>
                         @endforeach

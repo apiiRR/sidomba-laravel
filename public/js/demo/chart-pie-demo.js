@@ -7,12 +7,12 @@ var ctx = document.getElementById("myPieChart");
 var myPieChart = new Chart(ctx, {
   type: 'doughnut',
   data: {
-    labels: ["Direct", "Referral", "Social"],
+    labels: @json($genderTotals),
     datasets: [{
-      data: [55, 30, 15],
-      backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
-      hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
-      hoverBorderColor: "rgba(234, 236, 244, 1)",
+      data: @json($genderTotals),
+        backgroundColor: ['#4e73df', '#1cc88a'], // Biru dan Hijau
+        hoverBackgroundColor: ['#2e59d9', '#17a673'],
+        hoverBorderColor: "rgba(234, 236, 244, 1)",
     }],
   },
   options: {
