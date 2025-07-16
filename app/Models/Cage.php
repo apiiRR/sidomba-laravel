@@ -12,7 +12,8 @@ class Cage extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'mitra_name'
+        'mitra_name',
+        'image'
     ];
 
     public function breeding()

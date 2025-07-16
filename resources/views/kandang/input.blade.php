@@ -41,6 +41,14 @@
                         @endforeach
                     </div>
                 </div>
+                <div class="mb-3">
+                    <label for="image">Foto Kandang</label>
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="image" name="image" required>
+                        <label class="custom-file-label" for="image">Choose file...</label>
+                    </div>
+                </div>
+
                 <button type="submit" class="form-control btn btn-success mt-4">Simpan Data</button>
             </form>
         </div>
@@ -51,6 +59,15 @@
 @endsection
 
 @push('javascript')
+
+<script>
+    document.getElementById('image').addEventListener('change', function(e) {
+        const fileName = e.target.files[0]?.name;
+        if (fileName) {
+            e.target.nextElementSibling.innerText = fileName;
+        }
+    });
+</script>
 
 <!-- Page level plugins -->
 <script src="{{ asset('vendor/datatables/jquery.dataTables.min.js') }}"></script>

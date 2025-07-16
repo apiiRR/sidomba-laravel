@@ -11,6 +11,8 @@ use App\Models\ChildCategory;
 use App\Models\ChildCategorySheep;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
+
 
 
 class DombaController extends Controller
@@ -65,6 +67,12 @@ class DombaController extends Controller
         return view('domba.input-pregnant', compact('sheep'));
     }
 
+    public function createTransfer($id)
+    {
+        $sheep = Sheep::findOrFail($id);
+        return view('domba.input-transfer', compact('sheep'));
+    }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -78,12 +86,17 @@ class DombaController extends Controller
             'mother_id' => 'nullable|exists:sheep,sheep_id',
             'father_id' => 'nullable|exists:sheep,sheep_id',
             'pregnant_id' => 'nullable|exists:pregnant,pregnant_id',
+            'image' => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
         ]);
 
         if ($validator->fails()) {
             Alert::error('Gagal', 'Validasi data gagal. Periksa kembali input Anda.');
             return redirect()->back()->withErrors($validator)->withInput();
         }
+
+        //upload image
+        $image = $request->file('image');
+        $image->storeAs('sheep', $image->hashName());
 
         $sheep = Sheep::create([
             'tag_number' => $request->tag_number,
@@ -93,6 +106,7 @@ class DombaController extends Controller
             'mother_id' => $request->mother_id,
             'father_id' => $request->father_id,
             'pregnant_id' => $request->pregnant_id,
+            'image' => $image->hashName()
         ]);
 
         Alert::success('Success', 'Domba baru berhasil ditambahkan');
@@ -208,8 +222,11 @@ class DombaController extends Controller
             'weightRecords' => fn($q) => $q->orderByDesc('date'),
             'diseaseRecords' => fn($q) => $q->orderByDesc('date'),
         ])->findOrFail($id);
+        $history = $sheep->phaseHistory();
+        // dd($history);
 
-        return view('domba.show', compact('sheep'));
+
+        return view('domba.show', compact(['sheep', 'history']));
     }
 
     /**
@@ -231,11 +248,11 @@ class DombaController extends Controller
         $validator = Validator::make($request->all(), [
         'tag_number' => 'required|unique:sheep,tag_number,'. $id . ',sheep_id',
         'nama' => 'required',
-        'gender' => 'required|in:Male,Female',
+        'gender' => 'required|in:Jantan,Betina',
         'birth_date' => 'required|date',
-        'breed' => 'nullable',
         'mother_id' => 'nullable|exists:sheep,sheep_id',
         'father_id' => 'nullable|exists:sheep,sheep_id',
+        'image' => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
         ]);
 
         if ($validator->fails()) {
@@ -243,15 +260,54 @@ class DombaController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $sheep = Sheep::where('sheep_id', $id)->update([
-            'tag_number' => $request->tag_number,
-            'name' => $request->nama,
-            'gender' => $request->gender,
-            'birth_date' => $request->birth_date,
-            'breed' => $request->breed,
-            'mother_id' => $request->mother_id,
-            'father_id' => $request->father_id,
-        ]);
+        $sheep = Sheep::findOrFail($id);
+
+        //check if image is uploaded
+        if ($request->hasFile('image')) {
+
+			//delete old image
+            Storage::delete('sheep/'.$sheep->image);
+
+            //upload new image
+            $image = $request->file('image');
+            $image->storeAs('sheep', $image->hashName());
+
+            //update product with new image
+            $sheep->update([
+                'tag_number' => $request->tag_number,
+                'name' => $request->nama,
+                'gender' => $request->gender,
+                'birth_date' => $request->birth_date,
+                'breed' => $request->breed,
+                'mother_id' => $request->mother_id,
+                'father_id' => $request->father_id,
+                'image' => $image->hashName()
+            ]);
+
+        } else {
+
+            //update product without image
+            $sheep->update([
+                'tag_number' => $request->tag_number,
+                'name' => $request->nama,
+                'gender' => $request->gender,
+                'birth_date' => $request->birth_date,
+                'breed' => $request->breed,
+                'mother_id' => $request->mother_id,
+                'father_id' => $request->father_id,
+            ]);
+        }
+
+
+        // $sheep = Sheep::where('sheep_id', $id)->update([
+        //     'tag_number' => $request->tag_number,
+        //     'name' => $request->nama,
+        //     'gender' => $request->gender,
+        //     'birth_date' => $request->birth_date,
+        //     'breed' => $request->breed,
+        //     'mother_id' => $request->mother_id,
+        //     'father_id' => $request->father_id,
+        // ]);
 
         Alert::success('Success', 'Data domba berhasil diperbaharui');
         return redirect()->route('domba.show', $id);
@@ -262,7 +318,10 @@ class DombaController extends Controller
      */
     public function destroy($id)
     {
-        Sheep::destroy($id);
+        $sheep = Sheep::findOrFail($id);
+        Storage::delete('sheep/'.$sheep->image);
+        
+        $sheep->delete();
 
         Alert::success('Success', 'Domba berhasil dihapus');
         return redirect()->route('domba.index');

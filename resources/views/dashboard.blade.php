@@ -21,20 +21,25 @@
         <div class="card-body">
           <div class="row no-gutters align-items-center">
             <div class="col mr-2">
-              <div class="text-xs font-weight-bold text-{{  $randomColors[0] }} text-uppercase mb-1">
-                Total Domba
-              </div>
-              <div class="h5 mb-0 font-weight-bold text-gray-800">
-                {{ number_format($totalSheep) }} Ekor
-              </div>
+              <a href="{{ route('domba.index') }}" style="text-decoration: none;">
+                <div class="text-xs font-weight-bold text-{{  $randomColors[0] }} text-uppercase mb-1">
+                  Total Domba
+                </div>
+                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                  {{ number_format($totalSheep) }} Ekor
+                </div>
+              </a>
             </div>
             <div class="col-auto">
-              <i class="fas fa-plus fa-2x text-gray-300"></i>
+              <a href="{{ route('domba.input') }}" style="text-decoration: none;">
+                <i class="fas fa-plus fa-2x text-{{  $randomColors[0] }}"></i>
+              </a>
             </div>
           </div>
         </div>
       </div>
     </div>
+
 
     <!-- Earnings (Monthly) Card Example -->
     <div class="col-xl-4 col-md-6 mb-4">
@@ -42,15 +47,20 @@
         <div class="card-body">
           <div class="row no-gutters align-items-center">
             <div class="col mr-2">
-              <div class="text-xs font-weight-bold text-{{  $randomColors[1] }} text-uppercase mb-1">
-                Total Domba Breeding
-              </div>
-              <div class="h5 mb-0 font-weight-bold text-gray-800">
-                {{ number_format($breedingSheep) }} Ekor
-              </div>
+              <a href="{{ route('breeding.index') }}" style="text-decoration: none;">
+                <div class="text-xs font-weight-bold text-{{  $randomColors[1] }} text-uppercase mb-1">
+                  Total Domba Breeding
+                </div>
+                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                  {{ number_format($breedingSheep) }} Ekor
+                </div>
+              </a>
+
             </div>
             <div class="col-auto">
-              <i class="fas fa-plus fa-2x text-gray-300"></i>
+              <a href="{{ route('breeding.input') }}" style="text-decoration: none;">
+                <i class="fas fa-plus fa-2x text-{{ $randomColors[1] }}"></i>
+              </a>
             </div>
           </div>
         </div>
@@ -63,15 +73,19 @@
         <div class="card-body">
           <div class="row no-gutters align-items-center">
             <div class="col mr-2">
-              <div class="text-xs font-weight-bold text-{{  $randomColors[2] }} text-uppercase mb-1">
-                Total Domba Fattening
-              </div>
-              <div class="h5 mb-0 font-weight-bold text-gray-800">
-                {{ number_format($fatteningSheep) }} Ekor
-              </div>
+              <a href="{{ route('fattening.index') }}" style="text-decoration: none;">
+                <div class="text-xs font-weight-bold text-{{  $randomColors[2] }} text-uppercase mb-1">
+                  Total Domba Fattening
+                </div>
+                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                  {{ number_format($fatteningSheep) }} Ekor
+                </div>
+              </a>
             </div>
             <div class="col-auto">
-              <i class="fas fa-plus fa-2x text-gray-300"></i>
+              <a href="{{ route('fattening.input') }}" style="text-decoration: none;">
+                <i class="fas fa-plus fa-2x text-{{  $randomColors[2] }}"></i>
+              </a>
             </div>
           </div>
         </div>
@@ -235,7 +249,7 @@
       <div class="card shadow mb-4">
         <!-- Card Header - Dropdown -->
         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-          <h6 class="m-0 font-weight-bold text-success">Populasi Domba by Gander</h6>
+          <h6 class="m-0 font-weight-bold text-success">Gender</h6>
         </div>
         <!-- Card Body -->
         <div class="card-body">
@@ -244,10 +258,10 @@
           </div>
           <div class="mt-4 text-center small">
             <span class="mr-2">
-              <i class="fas fa-circle text-primary"></i> Male
+              <i class="fas fa-circle text-primary"></i> Jantan
             </span>
             <span class="mr-2">
-              <i class="fas fa-circle text-success"></i> Female
+              <i class="fas fa-circle text-success"></i> Betina
             </span>
           </div>
         </div>

@@ -30,7 +30,7 @@
           <thead>
             <tr>
               <th>Nomor Tag</th>
-              <th>Nama</th>
+              <th>Ras</th>
               <th>Gender</th>
               <th>Usia</th>
               <th>Action</th>
@@ -39,7 +39,7 @@
           <tfoot>
             <tr>
               <th>Nomor Tag</th>
-              <th>Nama</th>
+              <th>Ras</th>
               <th>Gender</th>
               <th>Usia</th>
               <th>Action</th>

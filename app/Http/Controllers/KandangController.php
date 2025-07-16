@@ -46,6 +46,8 @@ class KandangController extends Controller
         $validator = Validator::make($request->all(), [
             'mitra_name' => 'required',
             'pan_category_id.*' => 'exists:pan_category,pan_category_id', // Validasi tiap elemen array
+            'image' => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
+
         ]);
 
         if ($validator->fails()) {
@@ -53,8 +55,13 @@ class KandangController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
+        //upload image
+        $image = $request->file('image');
+        $image->storeAs('kandang', $image->hashName());
+
         $kandang = Cage::create([
             'mitra_name' => $request->mitra_name,
+            'image' => $image->hashName()
         ]);
 
 
@@ -127,7 +134,10 @@ class KandangController extends Controller
      */
     public function destroy(string $id)
     {
-        Cage::destroy($id);
+        $cage = Cage::findOrFail($id);
+        Storage::delete('kandang/'.$cage->image);
+
+        $cage->delete();
 
         Alert::success('Success', 'Data berhasil dihapus');
         return redirect()->route('kandang.index');

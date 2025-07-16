@@ -18,14 +18,14 @@
             <h6 class="m-0 font-weight-bold text-success">Input Data</h6>
         </div>
         <div class="card-body">
-            <form action="{{route('domba.store')}}" method="POST">
+            <form action="{{route('domba.store')}}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="mb-3">
                     <label id="tag_number">Tag Number</label>
                     <input class="form-control" type="text" id="tag_number" name="tag_number" required>
                 </div>
                 <div class="mb-3">
-                    <label id="nama">Nama</label>
+                    <label id="nama">Ras</label>
                     <input class="form-control" type="text" id="nama" name="nama" required>
                 </div>
                 <div class="mb-3">
@@ -59,10 +59,17 @@
                     </select>
                 </div>
                 <div class="mb-3" id="pregnant_container" style="display: none;">
-                    <label>Hasil Kehamilan : </label>
+                    <label>Hasil Kebuntingan : </label>
                     <select class="form-control" name="pregnant_id" id="pregnant_id">
                         <option value="">---</option>
                     </select>
+                </div>
+                <div class="mb-3">
+                    <label for="image">Foto Domba</label>
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="image" name="image" required>
+                        <label class="custom-file-label" for="image">Choose file...</label>
+                    </div>
                 </div>
 
                 <button type="submit" class="form-control btn btn-success mt-4">Simpan Data</button>
@@ -105,6 +112,15 @@
         } else {
             // Sembunyikan jika mother kosong
             pregnantContainer.style.display = 'none';
+        }
+    });
+
+
+    // file picker
+    document.getElementById('image').addEventListener('change', function(e) {
+        const fileName = e.target.files[0]?.name;
+        if (fileName) {
+            e.target.nextElementSibling.innerText = fileName;
         }
     });
 </script>

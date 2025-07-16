@@ -18,7 +18,7 @@
             <h6 class="m-0 font-weight-bold text-success">Ubah Data</h6>
         </div>
         <div class="card-body">
-            <form action="{{route('domba.update', $sheep->sheep_id)}}" method="POST">
+            <form action="{{route('domba.update', $sheep->sheep_id)}}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <div class="mb-3">
@@ -27,7 +27,7 @@
                         value="{{ $sheep->tag_number}}" required>
                 </div>
                 <div class="mb-3">
-                    <label id="nama">Nama</label>
+                    <label id="nama">Ras</label>
                     <input class="form-control" type="text" id="nama" name="nama" placeholder="Domba Shaun The Sheep"
                         value="{{ $sheep->name}}" required>
                 </div>
@@ -35,8 +35,8 @@
                     <label id="gender">Gender</label>
                     <select class="form-control" name="gender">
                         <option value="">---</option>
-                        <option value="Male" {{ $sheep->gender == 'Male' ? 'selected' : '' }}>Male</option>
-                        <option value="Female" {{ $sheep->gender == 'Female' ? 'selected' : '' }}>Female</option>
+                        <option value="Jantan" {{ $sheep->gender == 'Jantan' ? 'selected' : '' }}>Jantan</option>
+                        <option value="Betina" {{ $sheep->gender == 'Betina' ? 'selected' : '' }}>Betina</option>
                     </select>
                 </div>
                 <div class="mb-3">
@@ -45,27 +45,38 @@
                         value="{{ $sheep->birth_date}}" required>
                 </div>
                 <div class="mb-3">
-                    <label id="father_id">Father</label>
-                    <select class="form-control" name="father_id">
+                    <label for="father_id">Induk Jantan</label>
+                    <select class="form-control" id="father_id" name="father_id">
                         <option value="">---</option>
-                        @foreach ($allSheep as $key => $value)
-                        <option value="{{$value->sheep_id}}" {{ $sheep->father->sheep_id == $value->sheep_id ?
-                            'selected' : ''}}>{{
-                            $value->tag_number }} -
-                            {{ $value->name }}</option>
+                        @foreach ($allSheep as $sheepOption)
+                        <option value="{{ $sheepOption->sheep_id }}" {{ optional($sheep->father)->sheep_id ===
+                            $sheepOption->sheep_id ? 'selected' : '' }}>
+                            {{ $sheepOption->tag_number }} - {{ $sheepOption->name }}
+                        </option>
                         @endforeach
                     </select>
                 </div>
                 <div class="mb-3">
-                    <label id="mother_id">Mother</label>
-                    <select class="form-control" name="mother_id">
+                    <label for="mother_id">Induk Betina</label>
+                    <select class="form-control" id="mother_id" name="mother_id">
                         <option value="">---</option>
-                        @foreach ($allSheep as $key => $value)
-                        <option value="{{$value->sheep_id}}" {{ $sheep->mother->sheep_id == $value->sheep_id ?
-                            'selected' : ''}}>{{ $value->tag_number }} - {{ $value->name }}</option>
+                        @foreach ($allSheep as $sheepOption)
+                        <option value="{{ $sheepOption->sheep_id }}" {{ optional($sheep->mother)->sheep_id ===
+                            $sheepOption->sheep_id ? 'selected' : '' }}>
+                            {{ $sheepOption->tag_number }} - {{ $sheepOption->name }}
+                        </option>
                         @endforeach
                     </select>
                 </div>
+                <div class="mb-3">
+                    <label for="image">Foto Domba</label>
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="image" name="image" required>
+                        <label class="custom-file-label" for="image">Choose file...</label>
+                    </div>
+                </div>
+
+
                 <button type="submit" class="form-control btn btn-success mt-4">Ubah Data</button>
             </form>
         </div>
@@ -83,5 +94,14 @@
 
 <!-- Page level custom scripts -->
 <script src="{{ asset('js/demo/datatables-demo.js') }}"></script>
+
+<script>
+    document.getElementById('image').addEventListener('change', function(e) {
+        const fileName = e.target.files[0]?.name;
+        if (fileName) {
+            e.target.nextElementSibling.innerText = fileName;
+        }
+    });
+</script>
 
 @endpush

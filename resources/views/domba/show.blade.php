@@ -30,7 +30,7 @@
                     <input class="form-control" type="text" value="{{$sheep->tag_number}}" readonly>
                 </div>
                 <div class="mb-3">
-                    <label>Nama</label>
+                    <label>Ras</label>
                     <input class="form-control" type="text" value="{{$sheep->name}}" readonly>
                 </div>
                 <div class="mb-3">
@@ -64,16 +64,23 @@
                     </div>
                 </div>
                 <div class="mb-3">
-                    <label>Asal Kehamilan</label>
+                    <label>Asal Kebuntingan</label>
                     <div class="input-group">
                         <input class="form-control" type="text"
-                            value="{{$sheep->pregnancy_order ? 'Kehamilan Ke-'.$sheep->pregnancy_order : '-'}}"
+                            value="{{$sheep->pregnancy_order ? 'Kebuntingan Ke-'.$sheep->pregnancy_order : '-'}}"
                             readonly>
                         <div class="input-group-append">
                             <a class="btn btn-outline-secondary" type="button" id="button-addon2">Detail</a>
                         </div>
                     </div>
                 </div>
+                @if ($sheep->image != null)
+                <div class="mb-3 row">
+                    <label class="col-12">Foto Domba</label>
+                    <img src="{{ asset('storage/sheep/' . $sheep->image) }}" alt="Foto Domba"
+                        style="border: 1px solid #000000; padding:5px; border-radius:10px; max-height:500px; ">
+                </div>
+                @endif
             </form>
         </div>
     </div>
@@ -81,10 +88,10 @@
     @if ($sheep->gender == 'Betina')
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-sm-flex align-items-center justify-content-between">
-            <h6 class="m-0 font-weight-bold text-success">Data Kehamilan</h6>
+            <h6 class="m-0 font-weight-bold text-success">Data Kebuntingan</h6>
             @if ($sheep->death == false)
             <a type="button" class="btn btn-success"
-                href="{{ url('/domba/inputPregnant', ['id' => $sheep->sheep_id]) }}">Tambah Kehamilan</a>
+                href="{{ url('/domba/inputPregnant', ['id' => $sheep->sheep_id]) }}">Tambah Kebuntingan</a>
             @endif
         </div>
         <div class="card-body">
@@ -111,7 +118,15 @@
                             <td>{{ $id }}</td>
                             <td>{{ $value->date_started }}</td>
                             <td>{{ $value->date_ended }}</td>
-                            <td>{{ $value->date_ended }}</td>
+                            <td>{{ $value->children->count() }} Ekor</td>
+                            <td class="d-flex justify-content-center">
+                                <a href="{{ route('domba.show', ['id' => $value->sheep_id]) }}"
+                                    class="btn btn-info btn-icon-split mr-2">
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-solid fa-info text-white"></i>
+                                    </span>
+                                </a>
+                            </td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -120,6 +135,58 @@
         </div>
     </div>
     @endif
+
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3 d-sm-flex align-items-center justify-content-between">
+            <h6 class="m-0 font-weight-bold text-success">Riwayat Fase</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTableHistory" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Tanggal Mulai</th>
+                            <th>Tanggal Akhir</th>
+                            <th>Fase</th>
+                            <th>Kandang</th>
+                            <th>Pan</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @php
+                        $id = 0;
+                        @endphp
+                        @foreach ($history as $key => $value)
+                        @php
+                        $id++;
+                        @endphp
+                        <tr>
+                            <td>{{ $id }}</td>
+                            <td>{{ $value['date_started'] }} </td>
+                            <td>{{ $value['date_ended'] }}</td>
+                            <td>{{ $value['phase'] }}</td>
+                            <td>{{ $value['cage'] }}</td>
+                            <td>{{ $value['pan'] }}</td>
+                            <td class="d-flex justify-content-center">
+                                @if ($key == 0)
+                                <a href="{{ route('domba.inputTransfer', ['id' => $sheep->sheep_id]) }}"
+                                    class="btn btn-info btn-icon-split mr-2">
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-exchange-alt text-white"></i> </span>
+                                </a>
+                                @endif
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
 
 
     <div class="card shadow mb-4">
@@ -261,6 +328,7 @@
 <script>
     $(document).ready(function () {
         $('#dataTablePregnant').DataTable();
+        $('#dataTableHistory').DataTable();
         $('#dataTablePhase').DataTable();
         $('#dataTableWeight').DataTable();
         $('#dataTableDisease').DataTable();

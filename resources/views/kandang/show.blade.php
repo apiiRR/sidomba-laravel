@@ -40,6 +40,11 @@
                         </div>
                     </div>
                 </div>
+                <div class="mb-3 row">
+                    <label class="col-12">Foto Kandang</label>
+                    <img src="{{ asset('storage/kandang/' . $cage->image) }}" alt="Foto Domba"
+                        style="border: 1px solid #000000; padding:5px; border-radius:10px; height:500px; ">
+                </div>
             </form>
         </div>
     </div>
