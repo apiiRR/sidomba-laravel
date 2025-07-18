@@ -54,7 +54,6 @@
                             <th>Nama</th>
                             <th>Gender</th>
                             <th>Usia</th>
-                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -67,13 +66,6 @@
                             <td>{{ $value->sheep->name }}</td>
                             <td>{{ $value->sheep->gender }}</td>
                             <td>{{ $value->sheep->age }}</td>
-                            <td class="d-flex justify-content-center">
-                                <a href="{{ route('breeding.transferSheep', ['idBreedingSheep' => $value->breeding_sheep_id, 'idBreeding' => $breedingPan->breeding->breeding_id]) }}"
-                                    class="btn btn-info btn-icon-split mr-2">
-                                    <span class="icon text-white-50">
-                                        <i class="fas fa-exchange-alt text-white"></i> </span>
-                                </a>
-                            </td>
                         </tr>
                         @endforeach
                     </tbody>

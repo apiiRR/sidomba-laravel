@@ -21,23 +21,23 @@
             <form action="{{route('domba.storePregnant')}}" method="POST">
                 @csrf
                 <div class="mb-3">
-                    <label id="tag_number">Nomor Tag</label>
+                    <label id="tag_number">Nomor Tag<span class="text-danger">*</span></label>
                     <input class="form-control" type="text" id="tag_number" name="tag_number"
                         value="{{ $sheep->tag_number }}" required readonly>
                     <input class="form-control" type="text" id="sheep_id" name="sheep_id" value="{{ $sheep->sheep_id }}"
                         required readonly hidden>
                 </div>
                 <div class="mb-3">
-                    <label id="name">Nama</label>
+                    <label id="name">Nama<span class="text-danger">*</span></label>
                     <input class="form-control" type="text" id="name" name="name" value="{{ $sheep->name }}" required
                         readonly>
                 </div>
                 <div class="mb-3">
-                    <label id="date_started">Tanggal Mulai</label>
+                    <label id="date_started">Tanggal Mulai<span class="text-danger">*</span></label>
                     <input class="form-control" type="date" id="date_started" name="date_started" required>
                 </div>
                 <div class="mb-3">
-                    <label id="date_ended">Tanggal Akhir</label>
+                    <label id="date_ended">Tanggal Akhir<span class="text-danger">*</span></label>
                     <input class="form-control" type="date" id="date_ended" name="date_ended" required>
                 </div>
 

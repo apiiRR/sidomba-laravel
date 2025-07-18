@@ -21,12 +21,13 @@
             <form action="{{route('kandang.store')}}" method="POST">
                 @csrf
                 <div class="mb-3">
-                    <label id="mitra_name">Nama Mitra</label>
+                    <label id="mitra_name">Nama Mitra<span class="text-danger">*</span></label>
                     <input class="form-control" type="text" id="mitra_name" name="mitra_name" required>
                 </div>
                 <div class="mb-3">
                     <label id="sheep_id">Kategori Pan : </label>
                     <div class="form-group">
+                        @if (count($pan) > 0)
                         @foreach ($pan as $key => $value)
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="checkbox" name="pan_category_id[]"
@@ -39,12 +40,20 @@
                             </label>
                         </div>
                         @endforeach
+                        @else
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="pan_category_id[]" disabled>
+                            <label class="form-check-label">
+                                Pan Tidak Tersedia
+                            </label>
+                        </div>
+                        @endif
                     </div>
                 </div>
                 <div class="mb-3">
                     <label for="image">Foto Kandang</label>
                     <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="image" name="image" required>
+                        <input type="file" class="custom-file-input" id="image" name="image">
                         <label class="custom-file-label" for="image">Choose file...</label>
                     </div>
                 </div>

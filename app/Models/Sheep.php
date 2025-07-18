@@ -126,6 +126,7 @@ class Sheep extends Model
                     'date_ended' => $breeding->date_ended,
                     'cage' => $breeding->cage->mitra_name,
                     'pan' => $breedingPan->panCategory->category_name,
+                    'phase_sheep_id' => $breedingSheep->breeding_sheep_id,
                     'is_active' => Carbon::now()->between(
                         $breeding->date_started,
                         $breeding->date_ended ?? Carbon::now()
@@ -146,6 +147,7 @@ class Sheep extends Model
                     'date_ended' => $fattening->date_ended,
                     'cage' => $fattening->cage->mitra_name,
                     'pan' => $fatteningPan->panCategory->category_name,
+                    'phase_sheep_id' => $fatteningSheep->fattening_sheep_id,
                     'is_active' => Carbon::now()->between(
                         $fattening->date_started,
                         $fattening->date_ended ?? Carbon::now()

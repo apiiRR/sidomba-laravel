@@ -172,7 +172,7 @@
                             <td>{{ $value['pan'] }}</td>
                             <td class="d-flex justify-content-center">
                                 @if ($key == 0)
-                                <a href="{{ route('domba.inputTransfer', ['id' => $sheep->sheep_id]) }}"
+                                <a href="{{ route('domba.inputTransfer', ['id' => $sheep->sheep_id, 'phase_sheep_id' => $value['phase_sheep_id']]) }}"
                                     class="btn btn-info btn-icon-split mr-2">
                                     <span class="icon text-white-50">
                                         <i class="fas fa-exchange-alt text-white"></i> </span>

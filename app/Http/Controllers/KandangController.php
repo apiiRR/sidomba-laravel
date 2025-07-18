@@ -54,15 +54,23 @@ class KandangController extends Controller
             Alert::error('Gagal', 'Validasi data gagal. Periksa kembali input Anda.');
             return redirect()->back()->withErrors($validator)->withInput();
         }
+        
+        $kandang;
+        if ($request->image) {
+                    //upload image
+            $image = $request->file('image');
+            $image->storeAs('kandang', $image->hashName());
 
-        //upload image
-        $image = $request->file('image');
-        $image->storeAs('kandang', $image->hashName());
+            $kandang = Cage::create([
+                'mitra_name' => $request->mitra_name,
+                'image' => $image->hashName()
+            ]);
+        } else {
+            $kandang = Cage::create([
+                'mitra_name' => $request->mitra_name,
+            ]);
+        }
 
-        $kandang = Cage::create([
-            'mitra_name' => $request->mitra_name,
-            'image' => $image->hashName()
-        ]);
 
 
         foreach ($request->pan_category_id as $panCategoryId) {

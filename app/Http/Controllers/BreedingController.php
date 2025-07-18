@@ -152,7 +152,12 @@ class BreedingController extends Controller
     public function showPan(string $id)
     {
         $breedingPan = BreedingPan::with([
-            'breeding','breedingSheep', 'breedingFeeds', 'panCategory'])->findOrFail($id);
+            'breeding',
+            'breedingSheep'  => function ($query) {
+                $query->where('status', true);
+            },
+            'breedingFeeds',
+            'panCategory'])->findOrFail($id);
         
         return view('breeding.show-pan', compact(['breedingPan']));
     }

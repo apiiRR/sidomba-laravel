@@ -26,7 +26,7 @@ Route::get('/domba/inputPhase/{id}', [DombaController::class, 'createPhase'])->n
 Route::get('/domba/inputWeight/{id}', [DombaController::class, 'createWeight'])->name('domba.inputWeight');
 Route::get('/domba/inputDisease/{id}', [DombaController::class, 'createDisease'])->name('domba.inputDisease');
 Route::get('/domba/inputPregnant/{id}', [DombaController::class, 'createPregnant'])->name('domba.inputPregnant');
-Route::get('/domba/inputTransfer/{id}', [DombaController::class, 'createTransfer'])->name('domba.inputTransfer');
+Route::get('/domba/inputTransfer/{id}/{phaseSheepId}', [DombaController::class, 'createTransfer'])->name('domba.inputTransfer');
 Route::get('/domba/{id}', [DombaController::class, 'show'])->name('domba.show');
 Route::post('/domba/store', [DombaController::class, 'store'])->name('domba.store');
 Route::post('/domba/storeWeight', [DombaController::class, 'storeWeight'])->name('domba.storeWeight');
@@ -115,3 +115,4 @@ Route::put('/child_category/update/{id}', [ChildCategoryController::class, 'upda
 Route::delete('/child_category/delete/{id}', [ChildCategoryController::class, 'destroy'])->name('child_category.destroy');
 
 Route::get('/get-phase-options', [TransferController::class, 'getPhaseOptions']);
+Route::get('/get-pan-options', [TransferController::class, 'getPanOptions']);

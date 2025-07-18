@@ -21,23 +21,23 @@
             <form action="{{route('domba.store')}}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="mb-3">
-                    <label id="tag_number">Tag Number</label>
+                    <label id="tag_number">Tag Number<span class="text-danger">*</span></label>
                     <input class="form-control" type="text" id="tag_number" name="tag_number" required>
                 </div>
                 <div class="mb-3">
-                    <label id="nama">Ras</label>
+                    <label id="nama">Ras<span class="text-danger">*</span></label>
                     <input class="form-control" type="text" id="nama" name="nama" required>
                 </div>
                 <div class="mb-3">
-                    <label id="gender">Gender</label>
-                    <select class="form-control" name="gender">
+                    <label id="gender">Gender<span class="text-danger">*</span></label>
+                    <select class="form-control" name="gender" required>
                         <option value="">---</option>
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
+                        <option value="Jantan">Jantan</option>
+                        <option value="Betina">Betina</option>
                     </select>
                 </div>
                 <div class="mb-3">
-                    <label id="birth_date">Tanggal Lahir</label>
+                    <label id="birth_date">Tanggal Lahir<span class="text-danger">*</span> </label>
                     <input class="form-control" type="date" id="birth_date" name="birth_date" required>
                 </div>
                 <div class="mb-3">
@@ -67,7 +67,7 @@
                 <div class="mb-3">
                     <label for="image">Foto Domba</label>
                     <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="image" name="image" required>
+                        <input type="file" class="custom-file-input" id="image" name="image">
                         <label class="custom-file-label" for="image">Choose file...</label>
                     </div>
                 </div>

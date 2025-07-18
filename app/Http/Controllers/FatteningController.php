@@ -151,7 +151,12 @@ class FatteningController extends Controller
     public function showPan(string $id)
     {
         $fatteningPan = FatteningPan::with([
-            'fattening','fatteningSheep', 'fatteningFeeds', 'panCategory'])->findOrFail($id);
+            'fattening',
+            'fatteningSheep' => function ($query) {
+                $query->where('status', true);
+            },
+            'fatteningFeeds',
+            'panCategory'])->findOrFail($id);
         
         return view('fattening.show-pan', compact(['fatteningPan']));
     }

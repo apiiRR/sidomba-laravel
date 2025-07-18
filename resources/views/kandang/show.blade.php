@@ -40,11 +40,13 @@
                         </div>
                     </div>
                 </div>
+                @if ($cage->image != null)
                 <div class="mb-3 row">
                     <label class="col-12">Foto Kandang</label>
                     <img src="{{ asset('storage/kandang/' . $cage->image) }}" alt="Foto Domba"
                         style="border: 1px solid #000000; padding:5px; border-radius:10px; height:500px; ">
                 </div>
+                @endif
             </form>
         </div>
     </div>
@@ -91,7 +93,7 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" id="dataTableWeight" width="100%" cellspacing="0">
+                <table class="table table-bordered" id="dataTableBreeding" width="100%" cellspacing="0">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -134,7 +136,7 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" id="dataTableWeight" width="100%" cellspacing="0">
+                <table class="table table-bordered" id="dataTableFattening" width="100%" cellspacing="0">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -180,8 +182,8 @@
 <script>
     $(document).ready(function () {
         $('#dataTablePan').DataTable();
-        $('#dataTableWeight').DataTable();
-        $('#dataTableDisease').DataTable();
+        $('#dataTableBreeding').DataTable();
+        $('#dataTableFattening').DataTable();
   });
 </script>
 

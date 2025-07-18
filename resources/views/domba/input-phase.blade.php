@@ -21,23 +21,23 @@
             <form action="{{route('domba.storePhase')}}" method="POST">
                 @csrf
                 <div class="mb-3">
-                    <label id="tag_number">Nomor Tag</label>
+                    <label id="tag_number">Nomor Tag<span class="text-danger">*</span></label>
                     <input class="form-control" type="text" id="tag_number" name="tag_number" placeholder="A12345"
                         value="{{ $sheep->tag_number }}" required readonly>
                     <input class="form-control" type="text" id="sheep_id" name="sheep_id" placeholder="A12345"
                         value="{{ $sheep->sheep_id }}" required readonly hidden>
                 </div>
                 <div class="mb-3">
-                    <label id="date_started">Tanggal Mulai</label>
+                    <label id="date_started">Tanggal Mulai<span class="text-danger">*</span></label>
                     <input class="form-control" type="date" id="date_started" name="date_started" required>
                 </div>
                 <div class="mb-3">
-                    <label id="date_ended">Tanggal Akhir</label>
+                    <label id="date_ended">Tanggal Akhir<span class="text-danger">*</span></label>
                     <input class="form-control" type="date" id="date_ended" name="date_ended" required>
                 </div>
                 <div class="mb-3">
-                    <label id="child_category_id">Pilih Fase</label>
-                    <select class="form-control" name="child_category_id">
+                    <label id="child_category_id">Pilih Fase<span class="text-danger">*</span></label>
+                    <select class="form-control" name="child_category_id" required>
                         <option value="">---</option>
                         @foreach ($phase as $key => $value)
                         <option value="{{$value->child_category_id}}">

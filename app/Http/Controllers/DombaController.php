@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Sheep;
+use App\Models\BreedingSheep;
+use App\Models\FatteningSheep;
 use App\Models\Pregnant;
 use App\Models\WeightRecord;
 use App\Models\DiseaseRecord;
@@ -67,10 +69,11 @@ class DombaController extends Controller
         return view('domba.input-pregnant', compact('sheep'));
     }
 
-    public function createTransfer($id)
+    public function createTransfer($id, $phaseSheepId)
     {
         $sheep = Sheep::findOrFail($id);
-        return view('domba.input-transfer', compact('sheep'));
+
+        return view('domba.input-transfer', compact(['sheep', 'phaseSheepId']));
     }
 
     /**
@@ -81,7 +84,7 @@ class DombaController extends Controller
          $validator = Validator::make($request->all(), [
             'tag_number' => 'required|unique:sheep,tag_number',
             'nama' => 'required',
-            'gender' => 'required|in:Male,Female',
+            'gender' => 'required|in:Jantan,Betina',
             'birth_date' => 'required|date',
             'mother_id' => 'nullable|exists:sheep,sheep_id',
             'father_id' => 'nullable|exists:sheep,sheep_id',
@@ -94,20 +97,33 @@ class DombaController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        //upload image
-        $image = $request->file('image');
-        $image->storeAs('sheep', $image->hashName());
 
-        $sheep = Sheep::create([
-            'tag_number' => $request->tag_number,
-            'name' => $request->nama,
-            'gender' => $request->gender,
-            'birth_date' => $request->birth_date,
-            'mother_id' => $request->mother_id,
-            'father_id' => $request->father_id,
-            'pregnant_id' => $request->pregnant_id,
-            'image' => $image->hashName()
-        ]);
+        //upload image
+        if ($request->image) {
+            $image = $request->file('image');
+            $image->storeAs('sheep', $image->hashName());
+
+            $sheep = Sheep::create([
+                'tag_number' => $request->tag_number,
+                'name' => $request->nama,
+                'gender' => $request->gender,
+                'birth_date' => $request->birth_date,
+                'mother_id' => $request->mother_id,
+                'father_id' => $request->father_id,
+                'pregnant_id' => $request->pregnant_id,
+                'image' => $image->hashName()
+            ]);
+        } else {
+            $sheep = Sheep::create([
+                'tag_number' => $request->tag_number,
+                'name' => $request->nama,
+                'gender' => $request->gender,
+                'birth_date' => $request->birth_date,
+                'mother_id' => $request->mother_id,
+                'father_id' => $request->father_id,
+                'pregnant_id' => $request->pregnant_id,
+            ]);
+        }
 
         Alert::success('Success', 'Domba baru berhasil ditambahkan');
         return redirect()->route('domba.index');
@@ -208,6 +224,47 @@ class DombaController extends Controller
         return redirect()->route('domba.show', $request->sheep_id);
     }
 
+    public function storeTransfer(Request $request)
+    {   $validator = Validator::make($request->all(), [
+            'sheep_id' => 'required|exists:sheep,sheep_id',
+            'phase_sheep_id' => 'required',
+            'category' => 'required',
+            'pan_sheep_id' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            Alert::error('Gagal', 'Validasi data gagal. Periksa kembali input Anda.');
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        if ($request->category == 'breeding') {
+            $breeding = BreedingSheep::findOrFail($request->phase_sheep_id);
+            $breeding->update([
+                'status' => false,
+            ]);
+
+
+            $breedingInput = BreedingSheep::create([
+                'sheep_id' => $request->sheep_id,
+                'breeding_pan_id' => $request->pan_sheep_id, 
+            ]);
+        } else {
+            $fattening = FatteningSheep::findOrFail($request->phase_sheep_id);
+            $fattening->update([
+                'status' => false,
+            ]);
+
+
+            $fatteningInput = FatteningSheep::create([
+                'sheep_id' => $request->sheep_id,
+                'fattening_pan_id' => $request->pan_sheep_id, 
+            ]);
+        }
+
+        Alert::success('Success', 'Data kehamilan baru berhasil ditambahkan');
+        return redirect()->route('domba.show', $request->sheep_id);
+    }
+
     /**
      * Display the specified resource.
      */
@@ -222,6 +279,7 @@ class DombaController extends Controller
             'weightRecords' => fn($q) => $q->orderByDesc('date'),
             'diseaseRecords' => fn($q) => $q->orderByDesc('date'),
         ])->findOrFail($id);
+
         $history = $sheep->phaseHistory();
         // dd($history);
 
@@ -297,17 +355,6 @@ class DombaController extends Controller
                 'father_id' => $request->father_id,
             ]);
         }
-
-
-        // $sheep = Sheep::where('sheep_id', $id)->update([
-        //     'tag_number' => $request->tag_number,
-        //     'name' => $request->nama,
-        //     'gender' => $request->gender,
-        //     'birth_date' => $request->birth_date,
-        //     'breed' => $request->breed,
-        //     'mother_id' => $request->mother_id,
-        //     'father_id' => $request->father_id,
-        // ]);
 
         Alert::success('Success', 'Data domba berhasil diperbaharui');
         return redirect()->route('domba.show', $id);

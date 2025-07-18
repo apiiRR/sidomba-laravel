@@ -21,26 +21,26 @@
             <form action="{{route('domba.storeDisease')}}" method="POST">
                 @csrf
                 <div class="mb-3">
-                    <label id="tag_number">Tag Number</label>
+                    <label id="tag_number">Tag Number<span class="text-danger">*</span></label>
                     <input class="form-control" type="text" id="tag_number" name="tag_number" placeholder="A12345"
                         value="{{ $sheep->tag_number }}" required readonly>
                     <input class="form-control" type="text" id="sheep_id" name="sheep_id" placeholder="A12345"
                         value="{{ $sheep->sheep_id }}" required readonly hidden>
                 </div>
                 <div class="mb-3">
-                    <label id="date">Tanggal</label>
+                    <label id="date">Tanggal<span class="text-danger">*</span></label>
                     <input class="form-control" type="date" id="date" name="date" required>
                 </div>
                 <div class="mb-3">
-                    <label id="disease_name">Nama Penyakit</label>
+                    <label id="disease_name">Nama Penyakit<span class="text-danger">*</span></label>
                     <input class="form-control" type="text" id="disease_name" name="disease_name" required>
                 </div>
                 <div class="mb-3">
-                    <label id="description">Deskripsi</label>
+                    <label id="description">Deskripsi<span class="text-danger">*</span></label>
                     <input class="form-control" type="text" id="description" name="description" required>
                 </div>
                 <div class="mb-3">
-                    <label id="treatment">Treatment</label>
+                    <label id="treatment">Treatment<span class="text-danger">*</span></label>
                     <input class="form-control" type="text" id="treatment" name="treatment" required>
                 </div>
                 <button type="submit" class="form-control btn btn-success mt-4">Simpan Data</button>

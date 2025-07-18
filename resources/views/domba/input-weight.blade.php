@@ -21,18 +21,18 @@
             <form action="{{route('domba.storeWeight')}}" method="POST">
                 @csrf
                 <div class="mb-3">
-                    <label id="tag_number">Tag Number</label>
+                    <label id="tag_number">Tag Number<span class="text-danger">*</span></label>
                     <input class="form-control" type="text" id="tag_number" name="tag_number" placeholder="A12345"
                         value="{{ $sheep->tag_number }}" required readonly>
                     <input class="form-control" type="text" id="sheep_id" name="sheep_id" placeholder="A12345"
                         value="{{ $sheep->sheep_id }}" required readonly hidden>
                 </div>
                 <div class="mb-3">
-                    <label id="date">Tanggal</label>
+                    <label id="date">Tanggal<span class="text-danger">*</span></label>
                     <input class="form-control" type="date" id="date" name="date" required>
                 </div>
                 <div class="mb-3">
-                    <label id="weight">Berat Domba</label>
+                    <label id="weight">Berat Domba<span class="text-danger">*</span></label>
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="validatedInputGroupPrepend">Kg</span>
